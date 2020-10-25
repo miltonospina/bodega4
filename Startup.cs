@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using b4backend.DTOs;
 
 namespace b4backend
 {
@@ -18,6 +20,7 @@ namespace b4backend
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            AutoMapperConfiguration.Configure();
         }
 
         public IConfiguration Configuration { get; }
@@ -26,6 +29,10 @@ namespace b4backend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddDbContext<Models.bodega4Context>(
+                options => options.UseSqlServer(Configuration.GetConnectionString("Bodega4Context"))
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
