@@ -33,6 +33,10 @@ namespace b4backend
             services.AddDbContext<Models.bodega4Context>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("Bodega4Context"))
             );
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

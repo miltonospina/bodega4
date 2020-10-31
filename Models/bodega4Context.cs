@@ -22,6 +22,9 @@ namespace b4backend.Models
         public virtual DbSet<Paquetes> Paquetes { get; set; }
         public virtual DbSet<Productos> Productos { get; set; }
         public virtual DbSet<Usuarios> Usuarios { get; set; }
+        public virtual DbSet<VMinimoPos> VMinimoPos { get; set; }
+        public virtual DbSet<VPaquetesActuales> VPaquetesActuales { get; set; }
+        public virtual DbSet<VPosicionesActual> VPosicionesActual { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -215,6 +218,49 @@ namespace b4backend.Models
                     .HasColumnName("username")
                     .HasMaxLength(20)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<VMinimoPos>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("v_minimo_pos");
+
+                entity.Property(e => e.Columna).HasColumnName("columna");
+
+                entity.Property(e => e.Minimo).HasColumnName("minimo");
+
+                entity.Property(e => e.Nivel).HasColumnName("nivel");
+            });
+
+            modelBuilder.Entity<VPaquetesActuales>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("v_paquetes_actuales");
+
+                entity.Property(e => e.MovimientosId).HasColumnName("movimientosId");
+
+                entity.Property(e => e.PaquetesId).HasColumnName("paquetesId");
+            });
+
+            modelBuilder.Entity<VPosicionesActual>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("v_posiciones_actual");
+
+                entity.Property(e => e.Columna).HasColumnName("columna");
+
+                entity.Property(e => e.MovimientosId).HasColumnName("movimientosId");
+
+                entity.Property(e => e.Nivel).HasColumnName("nivel");
+
+                entity.Property(e => e.PaquetesId).HasColumnName("paquetesId");
+
+                entity.Property(e => e.Posicion).HasColumnName("posicion");
+
+                entity.Property(e => e.Sentido).HasColumnName("sentido");
             });
 
             OnModelCreatingPartial(modelBuilder);

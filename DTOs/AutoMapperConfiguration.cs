@@ -33,6 +33,12 @@ namespace b4backend.DTOs
                         .ReverseMap();
                     
                     cfg.CreateMap<Opciones, OpcionesDTO>();
+
+                    cfg.CreateMap<VMinimoPos,VMinimoPosDTO>();
+
+                    cfg.CreateMap<VPaquetesActuales,VPaquetesActualesDTO>();
+
+                    cfg.CreateMap<VPosicionesActual,VPosicionesActualDTO>();
                 }
                 );
         }
