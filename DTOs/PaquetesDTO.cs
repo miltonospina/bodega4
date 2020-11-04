@@ -10,7 +10,6 @@ namespace b4backend.DTOs
         public string Lote { get; set; }
         public int ProductoId { get; set; }
         public int ClienteId { get; set; }
-        public DateTime Fechaingreso { get; set; }
         public int? Bultos { get; set; }
 
         public virtual ClientesDTO Cliente { get; set; }

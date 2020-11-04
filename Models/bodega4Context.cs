@@ -117,10 +117,6 @@ namespace b4backend.Models
 
                 entity.Property(e => e.ClienteId).HasColumnName("clienteId");
 
-                entity.Property(e => e.Fechaingreso)
-                    .HasColumnName("fechaingreso")
-                    .HasColumnType("datetime2(3)");
-
                 entity.Property(e => e.Lote)
                     .IsRequired()
                     .HasColumnName("lote")
@@ -224,7 +220,7 @@ namespace b4backend.Models
             {
                 entity.HasNoKey();
 
-                entity.ToView("v_minimo_pos");
+                entity.ToView("v_minimo_pos", "bodega4");
 
                 entity.Property(e => e.Columna).HasColumnName("columna");
 
@@ -237,7 +233,7 @@ namespace b4backend.Models
             {
                 entity.HasNoKey();
 
-                entity.ToView("v_paquetes_actuales");
+                entity.ToView("v_paquetes_actuales", "bodega4");
 
                 entity.Property(e => e.MovimientosId).HasColumnName("movimientosId");
 
@@ -248,7 +244,7 @@ namespace b4backend.Models
             {
                 entity.HasNoKey();
 
-                entity.ToView("v_posiciones_actual");
+                entity.ToView("v_posiciones_actual", "bodega4");
 
                 entity.Property(e => e.Columna).HasColumnName("columna");
 

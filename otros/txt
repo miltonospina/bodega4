@@ -1,0 +1,21 @@
+dotnet new webapi -o b4
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.EntityFrameworkCore.Tools
+dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet add package AutoMapper
+dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
+
+dotnet tool install --global dotnet-ef
+dotnet tool install --global dotnet-aspnet-codegenerator
+
+
+dotnet ef dbcontext scaffold "Server=localhost;Database=bodega4;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -o Models
+
+
+dotnet-aspnet-codegenerator -p "b4backend.csproj" controller -name ClasesController -api -m b4backend.Models.Clases -dc b4backend.Models.bodega4Context -outDir Controllers -namespace b4backend.Controllers
+dotnet-aspnet-codegenerator -p "b4backend.csproj" controller -name ClientesController -api -m b4backend.Models.Clientes -dc b4backend.Models.bodega4Context -outDir Controllers -namespace b4backend.Controllers
+dotnet-aspnet-codegenerator -p "b4backend.csproj" controller -name MovimientosController -api -m b4backend.Models.Movimientos -dc b4backend.Models.bodega4Context -outDir Controllers -namespace b4backend.Controllers
+dotnet-aspnet-codegenerator -p "b4backend.csproj" controller -name OpcionesController -api -m b4backend.Models.Opciones -dc b4backend.Models.bodega4Context -outDir Controllers -namespace b4backend.Controllers
+dotnet-aspnet-codegenerator -p "b4backend.csproj" controller -name PaquetesController -api -m b4backend.Models.Paquetes -dc b4backend.Models.bodega4Context -outDir Controllers -namespace b4backend.Controllers
+dotnet-aspnet-codegenerator -p "b4backend.csproj" controller -name ProductosController -api -m b4backend.Models.Productos -dc b4backend.Models.bodega4Context -outDir Controllers -namespace b4backend.Controllers
+dotnet-aspnet-codegenerator -p "b4backend.csproj" controller -name UsuariosController -api -m b4backend.Models.Usuarios -dc b4backend.Models.bodega4Context -outDir Controllers -namespace b4backend.Controllers

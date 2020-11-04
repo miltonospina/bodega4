@@ -1,0 +1,62 @@
+POST https://localhost:5001/api/clases HTTP/1.1
+content-type: application/json
+
+{
+    "nombre": "sample",
+    "nombrecss": "samplecss"
+}
+
+
+
+###
+GET https://localhost:5001/api/clases HTTP/1.1
+
+
+
+
+###
+GET https://localhost:5001/api/productos HTTP/1.1
+
+
+###
+POST https://localhost:5001/api/productos HTTP/1.1
+content-type: application/json
+
+{
+    "claseId": 5,
+    "nombre": "sample2",
+    "pesoUnd": 1,
+    "peso": 25,
+    "unidad": "qq",
+    "bultos": 25
+  }
+
+
+
+###
+DELETE https://localhost:5001/api/clases/5
+
+
+###
+POST https://localhost:5001/api/estibas/
+content-type: application/json
+
+{
+"nivel":1,
+"columna":2,
+"usuariosId":16,
+"paquetes":{
+	"lote":"TEST3",
+	"productoId":3378,
+	"clienteId":36,
+	"bultos":30
+	}
+}
+
+###
+DELETE https://localhost:5001/api/estibas/2/1
+
+content-type: application/json
+{
+	"usuariosId":16
+}

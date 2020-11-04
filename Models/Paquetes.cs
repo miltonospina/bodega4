@@ -14,7 +14,6 @@ namespace b4backend.Models
         public string Lote { get; set; }
         public int ProductoId { get; set; }
         public int ClienteId { get; set; }
-        public DateTime Fechaingreso { get; set; }
         public int? Bultos { get; set; }
 
         public virtual Clientes Cliente { get; set; }

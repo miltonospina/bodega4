@@ -70,7 +70,6 @@ namespace b4backend.BIZ
             {
                 ingreso.Posicion = rs - 1;
                 ingreso.Fecha = DateTime.Now;
-                ingreso.Paquetes.Fechaingreso = ingreso.Fecha;
                 ingreso.Sentido = 1;
                 return ingreso;
             }
@@ -104,8 +103,6 @@ namespace b4backend.BIZ
                 {
                     return "La posición seleccionada no está ocupada.";
                 }
-
-
             }
         }
 
