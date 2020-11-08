@@ -1,0 +1,11 @@
+<mat-toolbar color="primary" class="app-toolbar">
+  <h1 class="app-name">App b4</h1>
+  <button mat-button [routerLink] = "['/ingreso']" routerLinkActive="mat-accent">Ingreso</button>
+  <button mat-button [routerLink] = "['/salida']" routerLinkActive="mat-accent">Salida</button>
+  <button mat-button [matMenuTriggerFor]="beforeMenu">Reportes</button>
+  <mat-menu #beforeMenu="matMenu" xPosition="before">
+    <button mat-button [routerLink] = "['/reportes/visual']" routerLinkActive="mat-accent">Visual</button>
+    <button mat-button [routerLink] = "['/reportes/inventario']" routerLinkActive="mat-accent">Inventario</button>
+    <button mat-button [routerLink] = "['/reportes/productos']" routerLinkActive="mat-accent">Productos</button>
+  </mat-menu>
+</mat-toolbar>

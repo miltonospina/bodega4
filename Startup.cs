@@ -57,6 +57,9 @@ namespace b4backend
             {
                 endpoints.MapControllers();
             });
+            
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
         }
     }
 }
