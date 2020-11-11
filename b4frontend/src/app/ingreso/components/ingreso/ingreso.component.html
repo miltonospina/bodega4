@@ -1,1 +1,97 @@
-<p>ingreso works!</p>
+<form [formGroup]="ingresoForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-card class="shipping-card">
+    <mat-card-header>
+      <mat-card-title>Registrar el ingreso de estibas a la bodega</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Columna" formControlName="columna">
+              <mat-option *ngFor="let columna of columnas" [value]="columna">
+                {{ columna }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="ingresoForm.controls['columna'].hasError('required')">
+              La columna es <strong>requireda</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Producto" formControlName="producto">
+              <mat-option *ngFor="let producto of productos" [value]="producto">
+                {{ producto.nombre }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="ingresoForm.controls['producto'].hasError('required')">
+              El producto es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Nivel" formControlName="nivel">
+              <mat-option *ngFor="let nivel of niveles" [value]="nivel">
+                {{ nivel }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="ingresoForm.controls['nivel'].hasError('required')">
+              El nivel es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input type="number" matInput placeholder="Bultos/Cajas" formControlName="bultos">
+            <mat-error *ngIf="ingresoForm.controls['bultos'].hasError('required')">
+              La cantidad Bultos/Cajas es <strong>requerido</strong>
+            </mat-error>
+            <mat-error *ngIf="ingresoForm.controls['bultos'].hasError('min')">
+              La cantidad de bulto debe ser mayor a <strong>1</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Cliente" formControlName="cliente">
+              <mat-option *ngFor="let cliente of clientes" [value]="cliente">
+                {{ cliente.nombre }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="ingresoForm.controls['cliente'].hasError('required')">
+              EL cliente es<strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Lote" formControlName="lote">
+            <mat-error *ngIf="ingresoForm.controls['lote'].hasError('required')">
+              El lote es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Posición esperada" formControlName="posicion" readonly>
+            <mat-error *ngIf="ingresoForm.controls['posicion'].hasError('required')">
+              Seleccione una columna y nivel disponible
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <button mat-raised-button color="primary" type="submit" [disabled]="!ingresoForm.valid">Ingresar</button>
+        </div>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</form>

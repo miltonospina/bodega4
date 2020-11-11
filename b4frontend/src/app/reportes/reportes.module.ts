@@ -5,6 +5,15 @@ import { VisualComponent } from './components/visual/visual.component';
 import { ProductosComponent } from './components/productos/productos.component';
 import { InventarioComponent } from './components/inventario/inventario.component';
 import { ReportesRoutingModule } from './reportes-routing.module';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCardModule } from '@angular/material/card';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 
 
@@ -12,7 +21,16 @@ import { ReportesRoutingModule } from './reportes-routing.module';
   declarations: [MenuComponent, VisualComponent, ProductosComponent, InventarioComponent],
   imports: [
     CommonModule,
-    ReportesRoutingModule
+    ReportesRoutingModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatCardModule,
+    ReactiveFormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   ]
 })
 export class ReportesModule { }

@@ -3,11 +3,10 @@ import { CommonModule } from '@angular/common';
 import { ClientesService } from './services/clientes.service';
 import { ProductosService } from './services/productos.service';
 
-
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,
+    CommonModule
   ],
   exports: [
     ClientesService,

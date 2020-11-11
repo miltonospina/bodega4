@@ -7,9 +7,9 @@ namespace b4backend.BIZ
 {
     public class Bodega4
     {
-        int columnas = 12;
-        int niveles = 10;
-        int posiciones = 47;
+        public int columnas = 16;
+        public int niveles = 10;
+        public int posiciones = 47;
 
 
         private readonly bodega4Context _context;
@@ -27,7 +27,7 @@ namespace b4backend.BIZ
                 mov.Nivel <= this.niveles;
         }
 
-        private int maxPosicion(Movimientos mov)
+        public int maxPosicion(Movimientos mov)
         {
             int respuesta;
             if (existePosicion(mov))
@@ -76,6 +76,24 @@ namespace b4backend.BIZ
         }
 
 
+        public object simularIngreso(Movimientos ingreso)
+        {
+            int rs = maxPosicion(ingreso);
+            if (rs == 1)
+            {
+                return ("No hay posiciones disponibles.");
+            }
+            else if (rs == -1)
+            {
+                return ("No existe la posición seleccionada.");
+            }
+            else
+            {
+                return (rs - 1);
+            }
+        }
+
+
         public object salida(Movimientos salida)
         {
             int rs = maxPosicion(salida);
@@ -107,7 +125,7 @@ namespace b4backend.BIZ
         }
 
 
-        private int ubicarEn(Movimientos mov)
+        public int ubicarEn(Movimientos mov)
         {
             var posActual = _context.VMinimoPos
                 .Where(s => s.Columna == mov.Columna)
@@ -128,6 +146,19 @@ namespace b4backend.BIZ
             {
                 return -1;
             }
+        }
+
+        public IEnumerable<int> getColumnas(){
+            return Enumerable.Range(1, this.columnas);
+        }
+
+        
+        public IEnumerable<int> getNiveles(){
+            return Enumerable.Range(1, this.niveles);
+        }
+
+        public IEnumerable<int> getPosiciones(){
+            return Enumerable.Range(1, this.posiciones);
         }
     }
 }
