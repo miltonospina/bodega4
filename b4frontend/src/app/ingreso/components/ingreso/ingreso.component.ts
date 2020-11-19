@@ -1,11 +1,10 @@
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Ingreso } from 'src/app/core/models/ingreso';
 import { Producto } from 'src/app/core/models/producto.model';
 import { BodegaService } from 'src/app/core/services/bodega.service';
 import { ProductosService } from 'src/app/core/services/productos.service';
-import { isString } from 'util';
 import { Cliente } from '../../../core/models/cliente.model';
 import { ClientesService } from '../../../core/services/clientes.service';
 

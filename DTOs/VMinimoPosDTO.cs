@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace b4backend.Models
+namespace b4backend.DTOs
 {
     public partial class VMinimoPosDTO
     {

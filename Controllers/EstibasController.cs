@@ -44,9 +44,10 @@ namespace b4backend.Controllers
             }
         }
 
+
         // DELETE: api/Estibas/5/5
         [HttpDelete("{columna}/{nivel}")]
-        public async Task<ActionResult<Paquetes>> DeleteEstibas(int columna, int nivel)
+        public async Task<ActionResult<Movimientos>> DeleteEstibas(int columna, int nivel)
         {
             Movimientos salida = new Movimientos();
             salida.Columna = columna;
@@ -59,10 +60,57 @@ namespace b4backend.Controllers
             }
             else
             {
-                _context.Movimientos.Add(salida);
+                salida = (Movimientos)rs;
+                _context.Movimientos.Add((Movimientos)salida);
                 await _context.SaveChangesAsync();
                 return CreatedAtAction("GetMovimientos", "Movimientos", new { id = salida.Id }, salida);
             }
+        }
+
+
+        // PUT : api/estibas/5/5
+        [HttpPut("{columna}/{nivel}")]
+        public async Task<ActionResult<Movimientos>> SalidaParcial(int columna, int nivel, Movimientos mvt)
+        {
+            Movimientos salida = new Movimientos();
+            salida.Columna = columna;
+            salida.Nivel = nivel;
+            salida.UsuariosId = mvt.UsuariosId;
+
+            //Movimientos actual = await _context.Movimientos.FindAsync(Id);
+
+
+            Object[] rs = _bodega4.salidaParcial(salida, (int)mvt.Paquetes.Bultos);
+            if (rs[0] is string)
+            {
+                return NotFound(rs);
+            }
+            else
+            {
+                Movimientos mSalida = (Movimientos)rs[0];
+                Movimientos mEntrada = (Movimientos)rs[1];
+
+                _context.Movimientos.Add(mSalida);
+                _context.Paquetes.Add(mEntrada.Paquetes);
+                _context.Movimientos.Add(mEntrada);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction("GetMovimientos", "Movimientos", new { id = mSalida.Id }, salida);
+            }
+        }
+
+
+
+        // GET: api/Estibas/5/5
+        [HttpGet("{columna}/{nivel}")]
+        public async Task<ActionResult> getPrimero(int columna, int nivel)
+        {
+            Movimientos mov = new Movimientos();
+            mov.Columna = columna;
+            mov.Nivel = nivel;
+
+            object rs = await _bodega4.getPrimero(mov);
+            return Ok(new { respuesta = rs });
         }
 
         private bool PaquetesExists(int id)

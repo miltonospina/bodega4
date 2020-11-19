@@ -22,4 +22,20 @@ export class BodegaService {
   ingresarEstibas(obj): Observable<any>{
     return this.http.post<Bodega>(`${environment.urlApi}estibas`, obj);
   }
+
+  salidaEstibas(col: number, niv: number): Observable<any>{
+    return this.http.delete(`${environment.urlApi}estibas/${col}/${niv}`);
+  }
+
+  salidaParcialEstibas(col: number, niv: number, paquete: object): Observable<any>{
+    return this.http.put(`${environment.urlApi}estibas/${col}/${niv}`, paquete);
+  }
+
+  getPrimero(col: number, niv: number): Observable<any> {
+    return this.http.get(`${environment.urlApi}estibas/${col}/${niv}`);
+  }
+
+  getVisual(niv: number): Observable<any> {
+    return this.http.get(`${environment.urlApi}reportes/visual/${niv}`);
+  }
 }

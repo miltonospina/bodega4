@@ -1,1 +1,27 @@
-<p>visual works!</p>
+<div *ngFor="let niv of niveles">
+    <h3>Nivel {{niv}}</h3>
+        <svg:svg viewBox="0 0 925 450" preserveAspectRatio="x925Y450 meet" style="background-color:aliceblue">
+        <!-- VACIOS -->
+        <g *ngFor="let col of columnas">
+            <rect *ngFor="let pos of posiciones"
+            [attr.width]="dim.xcubo"
+            [attr.heigth]="dim.ycubo"
+            [attr.x]="((dim.x + (pos * dim.xcubo))+ ((pos -1) * dim.xespacio))"
+            [attr.y]="((dim.y + (col * dim.ycubo)) + ((col -1) * dim.yespacio))"
+            height="19"
+            class="paquete vacio">
+            </rect>
+        </g>
+        <!-- REALES -->
+        <rect *ngFor="let item of contenidoBodega[niv - 1]"
+        [attr.width]="dim.xcubo"
+        [attr.heigth]="dim.ycubo"
+        [attr.x]="((dim.x + (item.posicion * dim.xcubo))+ ((item.posicion -1) * dim.xespacio))"
+        [attr.y]="((dim.y + (item.columna * dim.ycubo)) + ((item.columna -1) * dim.yespacio))"
+        height="19"
+        (click)="infoPaquete(item)"
+        matTooltip="Nivel: {{item.nivel}} Columna: {{item.columna}} Posición: {{item.posicion}}"
+        class="paquete {{item.nombrecss}}">
+        </rect>
+    </svg>
+</div>

@@ -1,0 +1,58 @@
+.vacio
+{
+        stroke-width:1px;
+        stroke-linecap:butt;
+        stroke-linejoin:miter;
+        stroke-opacity:1;
+        stroke:#ccc;
+        fill:#FFF;
+}
+
+
+
+.paquete
+{
+        stroke-width:1px;
+        stroke-linecap:butt;
+        stroke-linejoin:miter;
+        stroke-opacity:1;
+}
+
+.crudo
+{
+/*naranja*/
+        fill:#f37735;
+        color:#f37735;
+        stroke:#E7590E;
+}
+
+.blanco
+{	/*azul oscuro*/
+        stroke:#3498db;
+        color:#2980b9;
+        fill:#2980b9;
+}
+
+.refino
+{	
+/*amarillo*/
+        stroke:#f39c12;
+        color:#f39c12;
+        fill:#f1c40f;
+}
+
+.blancoespecial
+{
+/*azul claro*/
+        stroke:#578fac;
+        color:#578fac;
+        fill:#8ad2f7;
+}
+
+.organica
+{
+        /*verde*/
+        fill:#2ecc71;
+        color:#2ecc71;
+        stroke:#27ae60;
+}

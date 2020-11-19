@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using b4backend.Models;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace b4backend.BIZ
 {
@@ -125,6 +127,40 @@ namespace b4backend.BIZ
         }
 
 
+
+        public object[] salidaParcial(Movimientos salida, int bultosSalen)
+        {
+            object oSalida = this.salida(salida);
+
+            if (oSalida is string)
+            {
+                return new[] { oSalida };
+            }
+
+            Movimientos mSalida = (Movimientos)oSalida;
+            Movimientos mIngreso = (Movimientos)mSalida.Clone();
+
+            Paquetes paqueteActual = _context.Paquetes.Find(mIngreso.PaquetesId);
+
+            mIngreso.Paquetes = new Paquetes();
+            mIngreso.Paquetes.ProductoId = paqueteActual.ProductoId;
+            mIngreso.Paquetes.ClienteId = paqueteActual.ClienteId;
+            mIngreso.Paquetes.Lote = paqueteActual.Lote;
+            mIngreso.Sentido = 1;
+
+            mIngreso.Paquetes.Bultos = paqueteActual.Bultos - bultosSalen;
+            if (mIngreso.Paquetes.Bultos < 0)
+            {
+                return new[] {
+                    "Imposible hacer salida por "+ bultosSalen +" bultos, solo hay "+paqueteActual.Bultos + " disponibles"
+                    };
+            }
+            return new[] { mSalida, mIngreso };
+        }
+
+
+
+
         public int ubicarEn(Movimientos mov)
         {
             var posActual = _context.VMinimoPos
@@ -148,16 +184,62 @@ namespace b4backend.BIZ
             }
         }
 
-        public IEnumerable<int> getColumnas(){
+        public async Task<object> getPrimero(Movimientos mov)
+        {
+            var posActual = _context.VMinimoPos
+                .Where(s => s.Columna == mov.Columna)
+                .Where(s => s.Nivel == mov.Nivel)
+                .FirstOrDefault();
+
+            if (posActual != null)
+            {
+                var paqueteActual = _context.VPosicionesActual
+                .Where(s => s.Columna == posActual.Columna)
+                .Where(s => s.Nivel == posActual.Nivel)
+                .Where(s => s.Posicion == posActual.Minimo)
+                .FirstOrDefault();
+
+                if (paqueteActual != null)
+                {
+                    var paquete = await _context.Paquetes
+                    .Include(s => s.Cliente)
+                    .Include(s => s.Producto)
+                    .FirstOrDefaultAsync(i => i.Id == paqueteActual.PaquetesId);
+
+                    if (paquete != null)
+                    {
+                        return new { paquete = paquete, posicion = posActual.Minimo };
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+        public IEnumerable<int> getColumnas()
+        {
             return Enumerable.Range(1, this.columnas);
         }
 
-        
-        public IEnumerable<int> getNiveles(){
+
+        public IEnumerable<int> getNiveles()
+        {
             return Enumerable.Range(1, this.niveles);
         }
 
-        public IEnumerable<int> getPosiciones(){
+        public IEnumerable<int> getPosiciones()
+        {
             return Enumerable.Range(1, this.posiciones);
         }
     }
