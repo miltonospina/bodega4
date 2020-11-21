@@ -39,7 +39,11 @@ export class BodegaService {
     return this.http.get(`${environment.urlApi}reportes/visual/${niv}`);
   }
 
-  getInventario(): Observable<any> {
+  getReporteInventario(): Observable<any> {
     return this.http.get(`${environment.urlApi}reportes/inventario`);
+  }
+
+  getReporteProductos(): Observable<any> {
+    return this.http.get(`${environment.urlApi}reportes/productos`);
   }
 }

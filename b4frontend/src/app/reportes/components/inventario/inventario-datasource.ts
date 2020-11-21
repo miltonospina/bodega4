@@ -39,13 +39,12 @@ export class InventarioDataSource extends DataSource<InventarioItem> {
    */
   connect(): Observable<InventarioItem[]> {
     const dataMutations = [
-      this.bodegaService.getInventario(),
+      this.bodegaService.getReporteInventario(),
       this.paginator.page,
       this.sort.sortChange
     ];
     this.loadReporte();
     return merge(...dataMutations).pipe(map(() => {
-      console.log('Lo segundo');
       return this.getPagedData(this.getSortedData([...this.data]));
     }));
   }
@@ -91,11 +90,9 @@ export class InventarioDataSource extends DataSource<InventarioItem> {
   }
 
   private loadReporte(): void{
-    console.log('Crea el subscribe');
-    this.bodegaService.getInventario()
+    this.bodegaService.getReporteInventario()
     .subscribe(res => {
       this.data = res;
-      console.log('Llego la data');
     });
   }
 }

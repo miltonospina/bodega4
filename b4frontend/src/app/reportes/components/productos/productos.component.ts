@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
+import { BodegaService } from 'src/app/core/services/bodega.service';
 import { ProductosDataSource, ProductosItem } from './productos-datasource';
 
 @Component({
@@ -15,11 +16,13 @@ export class ProductosComponent implements AfterViewInit, OnInit {
   @ViewChild(MatTable) table: MatTable<ProductosItem>;
   dataSource: ProductosDataSource;
 
+  constructor(private bodegaService: BodegaService) { }
+  
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name'];
+  displayedColumns = ['clase', 'producto', 'cantidad', 'peso', 'unidad'];
 
   ngOnInit() {
-    this.dataSource = new ProductosDataSource();
+    this.dataSource = new ProductosDataSource(this.bodegaService);
   }
 
   ngAfterViewInit() {
