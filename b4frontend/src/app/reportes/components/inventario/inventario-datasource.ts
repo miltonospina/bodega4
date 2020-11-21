@@ -3,36 +3,20 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
+import { BodegaService } from 'src/app/core/services/bodega.service';
 
-// TODO: Replace this with your own data model type
 export interface InventarioItem {
-  name: string;
-  id: number;
+  fechaIngreso: string;
+  nivel: number;
+  columna: number;
+  posicion: number;
+  clase: string;
+  producto: string;
+  paquetesId: number;
+  bultos: number;
+  cliente: string;
 }
 
-// TODO: replace this with real data from your application
-const EXAMPLE_DATA: InventarioItem[] = [
-  {id: 1, name: 'Hydrogen'},
-  {id: 2, name: 'Helium'},
-  {id: 3, name: 'Lithium'},
-  {id: 4, name: 'Beryllium'},
-  {id: 5, name: 'Boron'},
-  {id: 6, name: 'Carbon'},
-  {id: 7, name: 'Nitrogen'},
-  {id: 8, name: 'Oxygen'},
-  {id: 9, name: 'Fluorine'},
-  {id: 10, name: 'Neon'},
-  {id: 11, name: 'Sodium'},
-  {id: 12, name: 'Magnesium'},
-  {id: 13, name: 'Aluminum'},
-  {id: 14, name: 'Silicon'},
-  {id: 15, name: 'Phosphorus'},
-  {id: 16, name: 'Sulfur'},
-  {id: 17, name: 'Chlorine'},
-  {id: 18, name: 'Argon'},
-  {id: 19, name: 'Potassium'},
-  {id: 20, name: 'Calcium'},
-];
 
 /**
  * Data source for the Inventario view. This class should
@@ -40,11 +24,11 @@ const EXAMPLE_DATA: InventarioItem[] = [
  * (including sorting, pagination, and filtering).
  */
 export class InventarioDataSource extends DataSource<InventarioItem> {
-  data: InventarioItem[] = EXAMPLE_DATA;
+  data: InventarioItem[] = [];
   paginator: MatPaginator;
   sort: MatSort;
 
-  constructor() {
+  constructor(private bodegaService: BodegaService) {
     super();
   }
 
@@ -54,15 +38,14 @@ export class InventarioDataSource extends DataSource<InventarioItem> {
    * @returns A stream of the items to be rendered.
    */
   connect(): Observable<InventarioItem[]> {
-    // Combine everything that affects the rendered data into one update
-    // stream for the data-table to consume.
     const dataMutations = [
-      observableOf(this.data),
+      this.bodegaService.getInventario(),
       this.paginator.page,
       this.sort.sortChange
     ];
-
+    this.loadReporte();
     return merge(...dataMutations).pipe(map(() => {
+      console.log('Lo segundo');
       return this.getPagedData(this.getSortedData([...this.data]));
     }));
   }
@@ -71,7 +54,7 @@ export class InventarioDataSource extends DataSource<InventarioItem> {
    *  Called when the table is being destroyed. Use this function, to clean up
    * any open connections or free any held resources that were set up during connect.
    */
-  disconnect() {}
+  disconnect() { }
 
   /**
    * Paginate the data (client-side). If you're using server-side pagination,
@@ -94,10 +77,25 @@ export class InventarioDataSource extends DataSource<InventarioItem> {
     return data.sort((a, b) => {
       const isAsc = this.sort.direction === 'asc';
       switch (this.sort.active) {
-        case 'name': return compare(a.name, b.name, isAsc);
-        case 'id': return compare(+a.id, +b.id, isAsc);
+        case 'producto': return compare(a.producto, b.producto, isAsc);
+        case 'clase': return compare(+a.clase, +b.clase, isAsc);
+        case 'nivel': return compare(+a.nivel, +b.nivel, isAsc);
+        case 'columna': return compare(+a.columna, +b.columna, isAsc);
+        case 'posicion': return compare(+a.posicion, +b.posicion, isAsc);
+        case 'cliente': return compare(+a.cliente, +b.cliente, isAsc);
+        case 'fechaIngreso': return compare(+a.fechaIngreso, +b.fechaIngreso, isAsc);
+        case 'paquetesId': return compare(+a.paquetesId, +b.paquetesId, isAsc);
         default: return 0;
       }
+    });
+  }
+
+  private loadReporte(): void{
+    console.log('Crea el subscribe');
+    this.bodegaService.getInventario()
+    .subscribe(res => {
+      this.data = res;
+      console.log('Llego la data');
     });
   }
 }

@@ -57,7 +57,7 @@ export class VisualComponent implements OnInit {
       });
   }
 
-  
+
   infoPaquete(paq): void{
     console.log(paq);
   }

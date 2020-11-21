@@ -85,3 +85,11 @@ content-type: application/json
   "usuariosId": 16
 	}
 }
+
+
+###
+GET https://localhost:5001/api/reportes/inventario
+
+
+###
+GET https://localhost:5001/api/reportes/productos

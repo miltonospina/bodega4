@@ -28,5 +28,20 @@ namespace b4backend.Controllers
             .Where(i => i.Nivel == nivel)
             .ToListAsync();
         }
+
+
+        [HttpGet("inventario")]
+        public async Task<ActionResult<IEnumerable<VInventario>>> getInventario()
+        {
+            return await _context.VInventario
+            .ToListAsync();
+        }
+
+        [HttpGet("productos")]
+        public async Task<ActionResult<IEnumerable<VInvProductos>>> getReporteProductos()
+        {
+            return await _context.VInvProductos
+            .ToListAsync();
+        }
     }
 }

@@ -38,4 +38,8 @@ export class BodegaService {
   getVisual(niv: number): Observable<any> {
     return this.http.get(`${environment.urlApi}reportes/visual/${niv}`);
   }
+
+  getInventario(): Observable<any> {
+    return this.http.get(`${environment.urlApi}reportes/inventario`);
+  }
 }

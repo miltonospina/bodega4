@@ -22,12 +22,15 @@ namespace b4backend.Models
         public virtual DbSet<Paquetes> Paquetes { get; set; }
         public virtual DbSet<Productos> Productos { get; set; }
         public virtual DbSet<Usuarios> Usuarios { get; set; }
+        public virtual DbSet<VFechaIngreso> VFechaIngreso { get; set; }
+        public virtual DbSet<VInvProductos> VInvProductos { get; set; }
+        public virtual DbSet<VInventario> VInventario { get; set; }
         public virtual DbSet<VMinimoPos> VMinimoPos { get; set; }
         public virtual DbSet<VPaquetesActuales> VPaquetesActuales { get; set; }
         public virtual DbSet<VPosicionesActual> VPosicionesActual { get; set; }
         public virtual DbSet<VReporteVisual> VReporteVisual { get; set; }
 
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Clases>(entity =>
@@ -215,6 +218,82 @@ namespace b4backend.Models
                     .HasColumnName("username")
                     .HasMaxLength(20)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<VFechaIngreso>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("v_fecha_ingreso", "bodega4");
+
+                entity.Property(e => e.FechaIngreso)
+                    .HasColumnName("fecha_ingreso")
+                    .HasColumnType("datetime2(3)");
+
+                entity.Property(e => e.PaquetesId).HasColumnName("paquetesId");
+            });
+
+            modelBuilder.Entity<VInvProductos>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("v_inv_productos", "bodega4");
+
+                entity.Property(e => e.Cantidad).HasColumnName("cantidad");
+
+                entity.Property(e => e.Clase)
+                    .IsRequired()
+                    .HasColumnName("clase")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.CodProducto).HasColumnName("cod_producto");
+
+                entity.Property(e => e.Peso).HasColumnName("peso");
+
+                entity.Property(e => e.Producto)
+                    .IsRequired()
+                    .HasColumnName("producto")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Unidad)
+                    .HasColumnName("unidad")
+                    .HasMaxLength(10);
+            });
+
+            modelBuilder.Entity<VInventario>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("v_inventario", "bodega4");
+
+                entity.Property(e => e.Bultos).HasColumnName("bultos");
+
+                entity.Property(e => e.Clase)
+                    .IsRequired()
+                    .HasColumnName("clase")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Cliente)
+                    .IsRequired()
+                    .HasColumnName("cliente")
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.Columna).HasColumnName("columna");
+
+                entity.Property(e => e.FechaIngreso)
+                    .HasColumnName("fecha_ingreso")
+                    .HasColumnType("datetime2(3)");
+
+                entity.Property(e => e.Nivel).HasColumnName("nivel");
+
+                entity.Property(e => e.PaquetesId).HasColumnName("paquetesId");
+
+                entity.Property(e => e.Posicion).HasColumnName("posicion");
+
+                entity.Property(e => e.Producto)
+                    .IsRequired()
+                    .HasColumnName("producto")
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<VMinimoPos>(entity =>
