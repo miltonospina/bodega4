@@ -50,13 +50,13 @@ export class ProductosDataSource extends DataSource<ProductosItem> {
    *  Called when the table is being destroyed. Use this function, to clean up
    * any open connections or free any held resources that were set up during connect.
    */
-  disconnect() {}
+  disconnect(): void {}
 
   /**
    * Paginate the data (client-side). If you're using server-side pagination,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getPagedData(data: ProductosItem[]) {
+  private getPagedData(data: ProductosItem[]): ProductosItem[]{
     const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
     return data.splice(startIndex, this.paginator.pageSize);
   }
@@ -65,7 +65,7 @@ export class ProductosDataSource extends DataSource<ProductosItem> {
    * Sort the data (client-side). If you're using server-side sorting,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getSortedData(data: ProductosItem[]) {
+  private getSortedData(data: ProductosItem[]): ProductosItem[] {
     if (!this.sort.active || this.sort.direction === '') {
       return data;
     }
@@ -99,6 +99,6 @@ clase: string;
 }
 
 /** Simple sort comparator for example ID/Name columns (for client-side sorting). */
-function compare(a: string | number, b: string | number, isAsc: boolean) {
+function compare(a: string | number, b: string | number, isAsc: boolean): number {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
