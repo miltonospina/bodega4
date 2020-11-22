@@ -9,11 +9,63 @@
 // Be sure that you only ever include this mixin once!
 @include mat-core();
 
+
+
+$prim_prov: (
+50: #409044,
+100: #308737,
+200: #217E2E,
+300: #157425,
+400: #006b1F,
+500: #006218,
+600: #005710,
+700: #004C09,
+800: #004104,
+900: #003600,    
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+  )
+);
+
+$sec_prov: (
+  50: #d7f065,
+  100: #CCE65A,
+  200: #C2DC4F,
+  300: #B8D145,
+  400: #ADC73B,
+  500: #a3bd32,
+  600: #94AE23,
+  700: #8AA516,
+  800: #7D990A,
+  900: #718d00,
+      
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+  )
+);
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$b4frontend-primary: mat-palette($mat-indigo);
-$b4frontend-accent: mat-palette($mat-pink, A200, A100, A400);
+$b4frontend-primary: mat-palette($prim_prov);
+$b4frontend-accent: mat-palette($sec_prov);
 
 // The warn palette is optional (defaults to red).
 $b4frontend-warn: mat-palette($mat-red);

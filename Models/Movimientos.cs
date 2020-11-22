@@ -16,5 +16,10 @@ namespace b4backend.Models
 
         public virtual Paquetes Paquetes { get; set; }
         public virtual Usuarios Usuarios { get; set; }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }

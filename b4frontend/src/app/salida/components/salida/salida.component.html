@@ -1,1 +1,93 @@
-<p>salida works!</p>
+<form [formGroup]="salidaForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-card class="shipping-card">
+    <mat-card-header>
+      <mat-card-title>Registrar la salida de estibas de la bodega</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Columna" formControlName="columna">
+              <mat-option *ngFor="let columna of columnas" [value]="columna">
+                {{ columna }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="salidaForm.controls['columna'].hasError('required')">
+              La columna es <strong>requireda</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Nivel" formControlName="nivel">
+              <mat-option *ngFor="let nivel of niveles" [value]="nivel">
+                {{ nivel }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="salidaForm.controls['nivel'].hasError('required')">
+              El nivel es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+
+
+      <div *ngIf="salidaForm.controls['movimiento'].value">
+        <h3>Detalles de posición</h3>
+
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Posición" formControlName="posicion" readonly>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Producto" formControlName="producto" readonly>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Cliente" formControlName="cliente" readonly>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Lote" formControlName="lote" readonly>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+              <mat-slider
+              thumbLabel
+              min="1"
+              max="{{oldvalue}}"
+              step="1"
+              formControlName="bultos"
+              disabled="{{salidaForm.get('completa').value}}"
+            ></mat-slider>
+            <span>{{salidaForm.get('bultos').value}}/{{oldvalue}}</span>
+          </div>
+          <div class="col">
+            <span>Salida completa?</span>
+            <mat-checkbox formControlName="completa"></mat-checkbox>
+          </div>
+        </div>
+
+      </div> <!--end if-->
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!salidaForm.valid">Registrar salida</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

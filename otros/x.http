@@ -42,8 +42,8 @@ POST https://localhost:5001/api/estibas/
 content-type: application/json
 
 {
-"nivel":1,
-"columna":2,
+"nivel":9,
+"columna":9,
 "usuariosId":16,
 "paquetes":{
 	"lote":"TEST3",
@@ -53,10 +53,43 @@ content-type: application/json
 	}
 }
 
+
+
 ###
-DELETE https://localhost:5001/api/estibas/2/1
+DELETE https://localhost:5001/api/estibas/9/9
 
 content-type: application/json
 {
 	"usuariosId":16
 }
+
+
+
+###
+GET https://localhost:5001/api/estibas/9/9
+
+
+###
+GET https://localhost:5001/api/reportes/visual/2
+
+
+
+###
+PUT https://localhost:5001/api/estibas/9/9
+content-type: application/json
+
+{
+"paquetes":
+  {
+	"bultos":17,
+  "usuariosId": 16
+	}
+}
+
+
+###
+GET https://localhost:5001/api/reportes/inventario
+
+
+###
+GET https://localhost:5001/api/reportes/productos

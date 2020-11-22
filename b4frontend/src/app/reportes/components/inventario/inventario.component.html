@@ -1,1 +1,70 @@
-<p>inventario works!</p>
+<div class="mat-elevation-z8">
+  <table mat-table class="full-width-table" matSort aria-label="Elements">
+    <!--Fecha id-->
+    <ng-container matColumnDef="paquetesId">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Estiba #</th>
+      <td mat-cell *matCellDef="let row">{{row.paquetesId}}</td>
+    </ng-container>
+
+    <!-- Id Column -->
+    <ng-container matColumnDef="clase">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Clase</th>
+      <td mat-cell *matCellDef="let row">{{row.clase}}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="producto">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Producto</th>
+      <td mat-cell *matCellDef="let row">{{row.producto}}</td>
+    </ng-container>
+
+    <!--Fecha ingreso-->
+    <ng-container matColumnDef="fechaIngreso">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Ingreso</th>
+      <td mat-cell *matCellDef="let row">{{row.fechaIngreso}}</td>
+    </ng-container>
+
+    <!--Fecha nivel-->
+    <ng-container matColumnDef="nivel">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nivel</th>
+      <td mat-cell *matCellDef="let row">{{row.nivel}}</td>
+    </ng-container>
+
+    <!--Fecha columna-->
+    <ng-container matColumnDef="columna">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Columna</th>
+      <td mat-cell *matCellDef="let row">{{row.columna}}</td>
+    </ng-container>
+
+
+    <!--Fecha posicion-->
+    <ng-container matColumnDef="posicion">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Posición</th>
+      <td mat-cell *matCellDef="let row">{{row.posicion}}</td>
+    </ng-container>
+
+    <!-- Name Bultos -->
+    <ng-container matColumnDef="bultos">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Bultos</th>
+      <td mat-cell *matCellDef="let row">{{row.bultos}}</td>
+    </ng-container>
+
+    <!-- Name Bultos -->
+    <ng-container matColumnDef="cliente">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Cliente</th>
+      <td mat-cell *matCellDef="let row">{{row.cliente}}</td>
+    </ng-container>
+
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator #paginator
+      [length]="dataSource?.data.length"
+      [pageIndex]="0"
+      [pageSize]="50"
+      [pageSizeOptions]="[25, 50, 100, 250]">
+  </mat-paginator>
+</div>
