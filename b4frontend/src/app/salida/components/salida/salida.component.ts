@@ -105,7 +105,7 @@ export class SalidaComponent implements OnInit {
 
 
   salidaCompleta(): void {
-    this.bodegaService.salidaEstibas(this.salidaForm.get('nivel').value, this.salidaForm.get('columna').value)
+    this.bodegaService.salidaEstibas(this.salidaForm.get('columna').value, this.salidaForm.get('nivel').value)
       .subscribe(rs => {
         if (rs.id) {
           this.snackBar.open(
@@ -128,8 +128,8 @@ export class SalidaComponent implements OnInit {
 
   salidaParcial(): void {
     this.bodegaService.salidaParcialEstibas(
-      this.salidaForm.get('nivel').value,
       this.salidaForm.get('columna').value,
+      this.salidaForm.get('nivel').value,
       {
         usuariosId: 16,
         paquetes: {
