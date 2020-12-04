@@ -13,6 +13,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using b4backend.DTOs;
 
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 namespace b4backend
 {
     public class Startup
@@ -31,13 +34,14 @@ namespace b4backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            Console.WriteLine(Configuration["enviroment"]);
             services.AddCors(options =>
         {
             options.AddPolicy(name: MyAllowSpecificOrigins,
                               builder =>
                               {
-                                  builder.WithOrigins("http://localhost:4200",
-                                                      "https://localhost:5001");
+                                  builder.WithOrigins(Configuration["serverURL:url1"],
+                                                      Configuration["serverURL:url2"]);
                               });
         });
             services.AddControllers();
