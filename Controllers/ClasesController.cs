@@ -27,6 +27,15 @@ namespace b4backend.Controllers
             return await _context.Clases.ToListAsync();
         }
 
+        // GET: api/Clases/productos
+        [HttpGet("productos")]
+        public async Task<ActionResult<IEnumerable<Clases>>> GetProductos()
+        {
+            return await _context.Clases
+                .Include(s => s.Productos)
+                .ToListAsync();
+        }
+
         // GET: api/Clases/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Clases>> GetClases(int id)
