@@ -93,3 +93,7 @@ GET https://localhost:5001/api/reportes/inventario
 
 ###
 GET https://localhost:5001/api/reportes/productos
+
+
+###
+GET https://localhost:5001/api/clases/productos HTTP/1.1
