@@ -19,11 +19,11 @@
         </div>
         <div class="col">
           <mat-form-field class="full-width">
-            <select matNativeControl formControlName="producto" placeholder="Producto"> 
-              <optgroup *ngFor="let clase of clases" [label]="clase.nombre">
-                <option *ngFor="let producto of clase.productos" [value]="producto">{{producto.id}}: {{producto.nombre}}</option>
-              </optgroup>
-            </select>
+            <mat-select formControlName="producto" placeholder="Producto">
+              <mat-optgroup  *ngFor="let clase of clases" [label]="clase.nombre">
+                <mat-option *ngFor="let producto of clase.productos" [value]="producto">{{producto.id}}: {{producto.nombre}}</mat-option>
+              </mat-optgroup>
+            </mat-select>
             <mat-error *ngIf="ingresoForm.controls['producto'].hasError('required')">
               El producto es <strong>requerido</strong>
             </mat-error>
