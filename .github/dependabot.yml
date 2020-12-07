@@ -6,13 +6,13 @@
 version: 2
 updates:
   - package-ecosystem: "nuget" # See documentation for possible values
-    directory: "/" # Location of package manifests
+    directory: "/backend" # Location of package manifests
     schedule:
       interval: "daily"
       
   # Maintain dependencies for npm
   - package-ecosystem: "npm"
-    directory: "/b4frontend"
+    directory: "/frontend"
     schedule:
       interval: "daily"
 

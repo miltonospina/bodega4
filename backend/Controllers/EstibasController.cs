@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using b4backend.Models;
-using b4backend.BIZ;
+using b4backend.BLL;
 
 namespace b4backend.Controllers
 {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace b4backend.BIZ
+namespace b4backend.BLL
 {
     public class Bodega4
     {
