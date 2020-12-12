@@ -227,6 +227,36 @@ namespace b4backend.BLL
 
         }
 
+
+        public object ingresoMultiple(Movimientos ingreso, int cantidad)
+        {
+            int rs = maxPosicion(ingreso);
+            if (rs == 1)
+            {
+                return ("No hay posiciones disponibles.");
+            }
+            else if (rs == -1)
+            {
+                return ("No existe la posición seleccionada.");
+            }
+            else if(rs - cantidad <= 0){
+                return ("No existen posiciones disponibles para todo el ingreso multiple.");
+            }
+            else
+            {
+                List<Movimientos> lMovimientos = new List<Movimientos> {};
+
+                for(int i=0; i < cantidad; i++){
+                    ingreso.Posicion = rs - 1 - i;
+                    ingreso.Fecha = DateTime.Now;
+                    ingreso.Sentido = 1;
+                    lMovimientos.Add((Movimientos)ingreso.Clone());
+                }
+                
+                return lMovimientos;
+            }
+        }
+
         public IEnumerable<int> getColumnas()
         {
             return Enumerable.Range(1, this.columnas);
