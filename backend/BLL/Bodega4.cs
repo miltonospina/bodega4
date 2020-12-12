@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace b4backend.BIZ
+namespace b4backend.BLL
 {
     public class Bodega4
     {
@@ -227,6 +227,103 @@ namespace b4backend.BIZ
 
         }
 
+
+        public object ingresoMultiple(Movimientos ingreso, int cantidad)
+        {
+            int rs = maxPosicion(ingreso);
+            if (rs == 1)
+            {
+                return ("No hay posiciones disponibles.");
+            }
+            else if (rs == -1)
+            {
+                return ("No existe la posición seleccionada.");
+            }
+            else if (rs - cantidad <= 0)
+            {
+                return ("No existen posiciones disponibles para todo el ingreso multiple.");
+            }
+            else
+            {
+                List<Movimientos> lMovimientos = new List<Movimientos> { };
+
+                for (int i = 0; i < cantidad; i++)
+                {
+                    ingreso.Posicion = rs - 1 - i;
+                    ingreso.Fecha = DateTime.Now;
+                    ingreso.Sentido = 1;
+                    lMovimientos.Add((Movimientos)ingreso.Clone());
+                }
+
+                return lMovimientos;
+            }
+        }
+
+
+        public object salidaMultiple(Movimientos salida, int cantidad)
+        {
+            int rs = maxPosicion(salida);
+
+            if (rs == (this.posiciones + 1))
+            {
+                return ("El tunel seleccionado está vacio.");
+            }
+            else if (rs == -1)
+            {
+                return ("No existe el tunel seleccionado.");
+            }
+            else if (rs + cantidad > (this.posiciones + 1))
+            {
+                return ("No se puede realizar una salida multiple de " + cantidad + " elementos.");
+            }
+            else
+            {
+                List<Movimientos> lMovimientos = new List<Movimientos> { };
+
+                for (int i = 0; i < cantidad; i++)
+                {
+                    salida.Posicion = rs + i;
+                    int paqueteId = getInPosicion(salida);
+                    if (paqueteId != -1)
+                    {
+                        salida.PaquetesId = paqueteId;
+                        salida.Fecha = DateTime.Now;
+                        salida.Sentido = -1;
+                        lMovimientos.Add((Movimientos)salida.Clone());
+                    }
+                    else
+                    {
+                        return "La posición seleccionada no está ocupada.";
+                    }
+                }
+                return lMovimientos;
+            }
+        }
+
+
+        public int getInPosicion(Movimientos mov)
+        {
+            var posActual = _context.VPosicionesActual
+                .Where(s => s.Columna == mov.Columna)
+                .Where(s => s.Nivel == mov.Nivel)
+                .Where(s => s.Posicion == mov.Posicion)
+                .FirstOrDefault();
+
+            if (posActual != null)
+            {
+                var paqueteActual = _context.VPosicionesActual
+                .Where(s => s.Columna == posActual.Columna)
+                .Where(s => s.Nivel == posActual.Nivel)
+                .Where(s => s.Posicion == posActual.Posicion)
+                .FirstOrDefault();
+
+                return paqueteActual.PaquetesId;
+            }
+            else
+            {
+                return -1;
+            }
+        }
         public IEnumerable<int> getColumnas()
         {
             return Enumerable.Range(1, this.columnas);
@@ -244,3 +341,4 @@ namespace b4backend.BIZ
         }
     }
 }
+

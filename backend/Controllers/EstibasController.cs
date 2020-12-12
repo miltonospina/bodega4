@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using b4backend.Models;
-using b4backend.BIZ;
+using b4backend.BLL;
+using b4backend.Objects;
+using System.Text.Json;
 
 namespace b4backend.Controllers
 {
@@ -111,6 +113,58 @@ namespace b4backend.Controllers
 
             object rs = await _bodega4.getPrimero(mov);
             return Ok(new { respuesta = rs });
+        }
+
+
+        // POST: api/estibas/multiples
+        [HttpPost("multiple")]
+        public async Task<ActionResult<Movimientos>> entradaMultiple(dataIngresoMultiple data)
+        {
+            Object rs = _bodega4.ingresoMultiple(data.ingreso, data.cantidad);
+            if (rs is string)
+            {
+                return NotFound(rs);
+            }
+            else
+            {
+                List<Movimientos> lista = (List<Movimientos>)rs;
+                lista.ForEach(async ingreso =>
+                {
+                    ingreso.Paquetes = new Paquetes(ingreso.Paquetes);
+
+                    await _context.Movimientos.AddAsync(ingreso);
+                });
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction("GetMovimientos", "Movimientos", new { id = 0 }, rs);
+            }
+        }
+
+
+        // DELETE: api/Estibas/multiple
+        [HttpDelete("multiple")]
+        public async Task<ActionResult<Movimientos>> DeleteMultiple(dataSalidaMultiple data)
+        {
+            Movimientos salida = new Movimientos();
+            salida.Columna = data.columna;
+            salida.Nivel = data.nivel;
+
+            Object rs = _bodega4.salidaMultiple(salida, data.cantidad);
+            if (rs is string)
+            {
+                return NotFound(rs);
+            }
+            else
+            {
+                List<Movimientos> lista = (List<Movimientos>)rs;
+                lista.ForEach(async salida =>
+                {
+                    salida.UsuariosId = data.UsuariosId;
+                    await _context.Movimientos.AddAsync(salida);
+                });
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetMovimientos", "Movimientos", new { id = 0 }, lista);
+            }
         }
 
         private bool PaquetesExists(int id)

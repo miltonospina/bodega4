@@ -93,3 +93,37 @@ GET https://localhost:5001/api/reportes/inventario
 
 ###
 GET https://localhost:5001/api/reportes/productos
+
+
+###
+GET https://localhost:5001/api/clases/productos HTTP/1.1
+
+
+###
+POST https://localhost:5001/api/estibas/multiple
+content-type: application/json
+
+{
+  "ingreso":{
+"nivel":1,
+"columna":1,
+"usuariosId":16,
+"paquetes":{
+	"lote":"TEST3",
+	"productoId":3378,
+	"clienteId":36,
+	"bultos":30
+	}
+},
+"cantidad":4}
+
+
+###
+DELETE https://localhost:5001/api/estibas/multiple/
+content-type: application/json
+
+{"nivel":1,
+"columna":1,
+"cantidad":2,
+"usuariosId":16,
+}

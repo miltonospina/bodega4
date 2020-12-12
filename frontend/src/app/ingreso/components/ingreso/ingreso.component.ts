@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Ingreso } from 'src/app/core/models/ingreso';
 import { Producto } from 'src/app/core/models/producto.model';
+import { Clase } from 'src/app/core/models/clase.model';
 import { BodegaService } from 'src/app/core/services/bodega.service';
 import { ProductosService } from 'src/app/core/services/productos.service';
 import { Cliente } from '../../../core/models/cliente.model';
@@ -17,6 +18,7 @@ export class IngresoComponent implements OnInit {
 
   clientes: Cliente[] = [];
   productos: Producto[] = [];
+  clases: Clase[] = [];
   niveles: number[] = [];
   columnas: number[] = [];
 
@@ -89,6 +91,7 @@ export class IngresoComponent implements OnInit {
     this.productosService.getAllProductos()
       .subscribe(productos => {
         this.productos = productos;
+        this.clases = productos;
       });
   }
 
