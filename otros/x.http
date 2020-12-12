@@ -116,3 +116,12 @@ content-type: application/json
 	}
 },
 "cantidad":2}
+
+
+###
+DELETE https://localhost:5001/api/estibas/multiple/
+content-type: application/json
+
+{"nivel":1,
+"columna":1,
+"cantidad":43}
