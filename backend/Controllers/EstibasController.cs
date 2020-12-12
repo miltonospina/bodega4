@@ -159,6 +159,7 @@ namespace b4backend.Controllers
                 List<Movimientos> lista = (List<Movimientos>)rs;
                 lista.ForEach(async salida =>
                 {
+                    salida.UsuariosId = data.UsuariosId;
                     await _context.Movimientos.AddAsync(salida);
                 });
                 await _context.SaveChangesAsync();

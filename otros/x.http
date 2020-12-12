@@ -115,7 +115,7 @@ content-type: application/json
 	"bultos":30
 	}
 },
-"cantidad":2}
+"cantidad":4}
 
 
 ###
@@ -124,4 +124,6 @@ content-type: application/json
 
 {"nivel":1,
 "columna":1,
-"cantidad":43}
+"cantidad":2,
+"usuariosId":16,
+}
