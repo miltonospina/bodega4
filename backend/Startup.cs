@@ -76,7 +76,7 @@ namespace b4backend
                 endpoints.MapControllers();
             });
             
-            app.UseDefaultFiles();
+            app.UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new List<string> { "index.html" }});
             app.UseStaticFiles();
         }
     }
