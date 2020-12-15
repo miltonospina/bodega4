@@ -23,6 +23,10 @@ export class BodegaService {
     return this.http.post<Bodega>(`${environment.urlApi}estibas`, obj);
   }
 
+  ingresarEstibasMultiple(obj): Observable<any> {
+    return this.http.post<Bodega>(`${environment.urlApi}estibas/multiple`, obj);
+  }
+
   salidaEstibas(col: number, niv: number): Observable<any> {
     return this.http.delete(`${environment.urlApi}estibas/${col}/${niv}`);
   }

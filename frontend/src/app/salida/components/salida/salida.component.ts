@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BodegaService } from 'src/app/core/services/bodega.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { isArray } from 'util';
 
 @Component({
   selector: 'app-salida',
@@ -17,7 +16,7 @@ export class SalidaComponent implements OnInit {
   posiciones: number;
   posicionPropuesta: object = {};
   oldvalue: number;
-  max_multiple: number;
+  maxMultiple: number;
 
   constructor(
     private fb: FormBuilder,
@@ -86,7 +85,7 @@ export class SalidaComponent implements OnInit {
           else {
             if (this.salidaForm.get('movimiento').value !== rs.paquete.id) {
               this.oldvalue = rs.paquete.bultos;
-              this.max_multiple = this.posiciones - rs.posicion + 1;
+              this.maxMultiple = this.posiciones - rs.posicion + 1;
               this.salidaForm.patchValue({
                 movimiento: rs.paquete.id,
                 posicion: rs.posicion,
