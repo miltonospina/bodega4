@@ -13,8 +13,10 @@ export class SalidaComponent implements OnInit {
   salidaForm: FormGroup;
   niveles: number[] = [];
   columnas: number[] = [];
+  posiciones: number;
   posicionPropuesta: object = {};
   oldvalue: number;
+  maxMultiple: number;
 
   constructor(
     private fb: FormBuilder,
@@ -34,7 +36,9 @@ export class SalidaComponent implements OnInit {
       cliente: [null, Validators.required],
       lote: [null, Validators.required],
       bultos: [null, Validators.min(1)],
-      completa: [true]
+      completa: [true],
+      multiple: [false],
+      cantidad: [1, Validators.min(1)]
     });
     this.onChanges();
   }
@@ -44,6 +48,7 @@ export class SalidaComponent implements OnInit {
       .subscribe(bodega => {
         this.niveles = bodega.niveles;
         this.columnas = bodega.columnas;
+        this.posiciones = Math.max.apply(null, bodega.posiciones);
       });
   }
 
@@ -80,6 +85,7 @@ export class SalidaComponent implements OnInit {
           else {
             if (this.salidaForm.get('movimiento').value !== rs.paquete.id) {
               this.oldvalue = rs.paquete.bultos;
+              this.maxMultiple = this.posiciones - rs.posicion + 1;
               this.salidaForm.patchValue({
                 movimiento: rs.paquete.id,
                 posicion: rs.posicion,
@@ -96,11 +102,38 @@ export class SalidaComponent implements OnInit {
 
   onSubmit(): void {
     if (this.salidaForm.get('completa').value) {
-      this.salidaCompleta();
+      if (this.salidaForm.get('multiple').value) {
+        this.salidaMultiple();
+      }
+      else {
+        this.salidaCompleta();
+      }
     }
     else {
       this.salidaParcial();
     }
+  }
+
+  salidaMultiple(): void {
+    console.log('multiple');
+    this.bodegaService.salidaMultiple(this.salidaForm.get('columna').value, this.salidaForm.get('nivel').value, this.salidaForm.get('cantidad').value)
+    .subscribe(rs => {
+      if (rs instanceof Array) {
+        this.snackBar.open(
+          `Se registró la salida de ${rs.length} estibas`,
+          'Ok',
+          { duration: 3000 }
+        );
+        this.fetchPrimero(this.salidaForm.get('columna').value, this.salidaForm.get('nivel').value);
+      }
+      else {
+        this.snackBar.open(
+          rs,
+          'Ok',
+          { duration: 3000 }
+        );
+      }
+    });
   }
 
 

@@ -89,6 +89,23 @@
           </mat-form-field>
         </div>
         <div class="col">
+          <span>Ingreso Múltiple</span>
+          <mat-checkbox formControlName="multiple"></mat-checkbox>          
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-slider
+          thumbLabel
+          min="1"
+          max="{{ingresoForm.get('posicion').value}}"
+          step="1"
+          formControlName="cantidad"
+          disabled="{{!ingresoForm.get('multiple').value}}"
+        ></mat-slider>
+        <span>{{ingresoForm.get('cantidad').value}}/{{ingresoForm.get('posicion').value}}</span>
+        </div>
+        <div class="col">
           <button mat-raised-button color="primary" type="submit" [disabled]="!ingresoForm.valid">Ingresar</button>
         </div>
       </div>

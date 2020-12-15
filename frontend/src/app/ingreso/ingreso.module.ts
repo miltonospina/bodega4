@@ -6,6 +6,8 @@ import { IngresoRoutingModule } from './ingreso-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule} from '../material/material.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -15,7 +17,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     IngresoRoutingModule,
     MaterialModule,
     ReactiveFormsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSliderModule,
+    MatCheckboxModule
   ]
 })
 export class IngresoModule { }

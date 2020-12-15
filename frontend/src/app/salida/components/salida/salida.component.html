@@ -65,8 +65,12 @@
             </mat-form-field>
           </div>
         </div>
-
+        <h3>Opciones de la salida:</h3>
         <div class="row">
+          <div class="col">
+            <span>Salida completa?</span>
+            <mat-checkbox formControlName="completa"></mat-checkbox>
+          </div>
           <div class="col">
               <mat-slider
               thumbLabel
@@ -78,9 +82,22 @@
             ></mat-slider>
             <span>{{salidaForm.get('bultos').value}}/{{oldvalue}}</span>
           </div>
+        </div>
+        <div class="row" *ngIf="salidaForm.controls['completa'].value">
           <div class="col">
-            <span>Salida completa?</span>
-            <mat-checkbox formControlName="completa"></mat-checkbox>
+            <span>Salida Múltiple?</span>
+            <mat-checkbox formControlName="multiple"></mat-checkbox>
+          </div>
+          <div class="col">
+              <mat-slider
+              thumbLabel
+              min="1"
+              max="{{maxMultiple}}"
+              step="1"
+              formControlName="cantidad"
+              disabled="{{!salidaForm.get('multiple').value}}"
+            ></mat-slider>
+            <span>{{salidaForm.get('cantidad').value}}/{{maxMultiple}}</span>
           </div>
         </div>
 
