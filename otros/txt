@@ -19,3 +19,5 @@ dotnet-aspnet-codegenerator -p "b4backend.csproj" controller -name OpcionesContr
 dotnet-aspnet-codegenerator -p "b4backend.csproj" controller -name PaquetesController -api -m b4backend.Models.Paquetes -dc b4backend.Models.bodega4Context -outDir Controllers -namespace b4backend.Controllers
 dotnet-aspnet-codegenerator -p "b4backend.csproj" controller -name ProductosController -api -m b4backend.Models.Productos -dc b4backend.Models.bodega4Context -outDir Controllers -namespace b4backend.Controllers
 dotnet-aspnet-codegenerator -p "b4backend.csproj" controller -name UsuariosController -api -m b4backend.Models.Usuarios -dc b4backend.Models.bodega4Context -outDir Controllers -namespace b4backend.Controllers
+
+ng g @angular/material:address-form productos/components/nuevo-producto

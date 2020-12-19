@@ -16,6 +16,10 @@ export class ProductosService {
     return this.http.get<Clase[]>(`${environment.urlApi}clases/productos`);
   }
 
+  getProductos(): Observable<Producto[]> {
+    return this.http.get<Producto[]>(`${environment.urlApi}productos`);
+  }
+
   getProducto(id: string): Observable<Producto> {
     return this.http.get<Producto>(`${environment.urlApi}clientes/${id}`);
   }

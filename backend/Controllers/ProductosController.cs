@@ -24,7 +24,12 @@ namespace b4backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Productos>>> GetProductos()
         {
-            return await _context.Productos.ToListAsync();
+            var x = _context.Productos
+            .Include(p => p.Clase)
+            .ToList();
+
+            x.ForEach(p => p.Clase.Productos = null);
+            return x;
         }
 
         // GET: api/Productos/5
