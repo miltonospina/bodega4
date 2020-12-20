@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NuevoProductoComponent } from './components/nuevo-producto/nuevo-producto.component';
+
 import { ListaProductosComponent } from './components/lista-productos/lista-productos.component';
 import { ProductosRoutingModule } from './productos-routing.module';
 import { MatInputModule } from '@angular/material/input';
@@ -17,7 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
-  declarations: [NuevoProductoComponent, ListaProductosComponent],
+  declarations: [ListaProductosComponent],
   imports: [
     CommonModule,
     ProductosRoutingModule,

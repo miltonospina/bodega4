@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Ingreso } from 'src/app/core/models/ingreso';
-import { Producto } from 'src/app/core/models/producto.model';
 import { Clase } from 'src/app/core/models/clase.model';
 import { BodegaService } from 'src/app/core/services/bodega.service';
 import { ProductosService } from 'src/app/core/services/productos.service';
@@ -25,6 +24,8 @@ export class IngresoComponent implements OnInit {
   ingreso: Ingreso;
   ingresoForm: FormGroup;
 
+  posibleMultiple: boolean;
+
   constructor(
     private fb: FormBuilder,
     private clientesService: ClientesService,
@@ -45,39 +46,19 @@ export class IngresoComponent implements OnInit {
       cliente: [null, Validators.required],
       bultos: [null, Validators.required],
       posicion: [null, [Validators.required, Validators.min(1)]],
+      multiple: [false],
+      cantidad: [1, [Validators.min(1)]],
     });
     this.onChanges();
   }
 
   onSubmit(): void {
-    this.bodegaService.ingresarEstibas({
-      nivel: this.ingresoForm.get('nivel').value,
-      columna: this.ingresoForm.get('columna').value,
-      usuariosId: 16,
-      paquetes: {
-        lote: this.ingresoForm.get('lote').value,
-        productoId: this.ingresoForm.get('producto').value.id,
-        clienteId: this.ingresoForm.get('cliente').value.id,
-        bultos: this.ingresoForm.get('bultos').value
-      }
-    })
-      .subscribe(rs => {
-        if (rs.id) {
-          this.snackBar.open(
-            `Se ingresó la estiba en la posición [${rs.columna}][${rs.nivel}][${rs.posicion}] fecha: ${rs.fecha}`,
-            'Ok',
-            { duration: 3000 }
-          );
-          this.ingresoForm.patchValue({ posicion: (rs.posicion - 1) });
-        }
-        else {
-          this.snackBar.open(
-            rs,
-            'Ok',
-            { duration: 3000 }
-          );
-        }
-      });
+    if (this.ingresoForm.get('multiple').value) {
+      this.ingresoMultiple();
+    }
+    else {
+      this.ingesoSencillo();
+    }
   }
 
   fetchClientes(): void {
@@ -118,6 +99,13 @@ export class IngresoComponent implements OnInit {
 
     this.ingresoForm.get('posicion').valueChanges.subscribe(val => {
       this.fetchDisponibilidad(this.ingresoForm.get('columna').value, this.ingresoForm.get('nivel').value);
+      if (val === undefined || val <= 1) {
+        this.ingresoForm.patchValue({ multiple: false });
+        this.posibleMultiple = false;
+      }
+      else {
+        this.posibleMultiple = true;
+      }
     });
 
   }
@@ -141,6 +129,73 @@ export class IngresoComponent implements OnInit {
           }
         });
     }
+  }
+
+  ingesoSencillo(): void {
+    this.bodegaService.ingresarEstibas({
+      nivel: this.ingresoForm.get('nivel').value,
+      columna: this.ingresoForm.get('columna').value,
+      usuariosId: 16,
+      paquetes: {
+        lote: this.ingresoForm.get('lote').value,
+        productoId: this.ingresoForm.get('producto').value.id,
+        clienteId: this.ingresoForm.get('cliente').value.id,
+        bultos: this.ingresoForm.get('bultos').value
+      }
+    })
+      .subscribe(rs => {
+        if (rs.id) {
+          this.snackBar.open(
+            `Se ingresó la estiba en la posición [${rs.columna}][${rs.nivel}][${rs.posicion}] fecha: ${rs.fecha}`,
+            'Ok',
+            { duration: 3000 }
+          );
+          this.ingresoForm.patchValue({ posicion: (rs.posicion - 1) });
+        }
+        else {
+          this.snackBar.open(
+            rs,
+            'Ok',
+            { duration: 3000 }
+          );
+        }
+      });
+  }
+
+
+  ingresoMultiple(): void {
+    this.bodegaService.ingresarEstibasMultiple({
+      cantidad: this.ingresoForm.get('cantidad').value,
+      ingreso: {
+        nivel: this.ingresoForm.get('nivel').value,
+        columna: this.ingresoForm.get('columna').value,
+        usuariosId: 16,
+        paquetes: {
+          lote: this.ingresoForm.get('lote').value,
+          productoId: this.ingresoForm.get('producto').value.id,
+          clienteId: this.ingresoForm.get('cliente').value.id,
+          bultos: this.ingresoForm.get('bultos').value
+        }
+      }
+    })
+      .subscribe(rs => {
+        if (rs instanceof Array) {
+          this.snackBar.open(
+            `Se ingresaron ${rs.length} la estiba en la posición [${rs[0].columna}][${rs[0].nivel}][${rs[0].posicion}] fecha: ${rs[0].fecha}`,
+            'Ok',
+            { duration: 3000 }
+          );
+          this.ingresoForm.patchValue({ posicion: (rs[rs.length - 1].posicion - 1) });
+          this.ingresoForm.patchValue({ cantidad: 1 });
+        }
+        else {
+          this.snackBar.open(
+            rs,
+            'Ok',
+            { duration: 3000 }
+          );
+        }
+      });
   }
 
 }

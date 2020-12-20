@@ -3,12 +3,11 @@ import { CommonModule } from '@angular/common';
 import { IngresoComponent } from './components/ingreso/ingreso.component';
 import { IngresoRoutingModule } from './ingreso-routing.module';
 
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule} from '../material/material.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-
 
 @NgModule({
   declarations: [IngresoComponent],
@@ -19,7 +18,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     ReactiveFormsModule,
     MatSnackBarModule,
     MatSliderModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    FormsModule
   ]
 })
 export class IngresoModule { }
