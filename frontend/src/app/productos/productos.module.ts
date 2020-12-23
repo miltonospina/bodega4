@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ListaProductosComponent } from './components/lista-productos/lista-productos.component';
+import { NuevoProductoComponent } from './components/nuevo-producto/nuevo-producto.component';
 import { ProductosRoutingModule } from './productos-routing.module';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,11 +14,13 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 
 
 @NgModule({
-  declarations: [ListaProductosComponent],
+  declarations: [ListaProductosComponent, NuevoProductoComponent],
   imports: [
     CommonModule,
     ProductosRoutingModule,
@@ -30,7 +33,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatIconModule
+    MatIconModule,
+    MatSnackBarModule
   ]
 })
 export class ProductosModule { }

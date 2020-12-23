@@ -1,56 +1,63 @@
 <div class="mat-elevation-z8">
-    <table mat-table class="full-width-table" matSort aria-label="Productos">
-      <!-- Id Column -->
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
-        <td mat-cell *matCellDef="let row">{{row.id}}</td>
-      </ng-container>
-  
-      <!-- Name Column -->
-      <ng-container matColumnDef="nombre">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
-        <td mat-cell *matCellDef="let row">{{row.nombre}}</td>
-      </ng-container>
-  
-      <!-- Peso Column -->
-      <ng-container matColumnDef="peso">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Peso</th>
-        <td mat-cell *matCellDef="let row">{{row.peso}}</td>
-      </ng-container>
-  
-      <!-- Unidad Column -->
-      <ng-container matColumnDef="unidad">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Unidad</th>
-        <td mat-cell *matCellDef="let row">{{row.unidad}}</td>
-      </ng-container>
-  
-      <!-- PesoUnd Column -->
-      <ng-container matColumnDef="pesoUnd">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>PesoUnd</th>
-        <td mat-cell *matCellDef="let row">{{row.pesoUnd}}</td>
-      </ng-container>
-  
-      <!-- Clase Column -->
-      <ng-container matColumnDef="clase">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Clase</th>
-        <td mat-cell *matCellDef="let row">{{row.clase.nombre}}</td>
-      </ng-container>
-      
-      <ng-container matColumnDef="acciones">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Acciones</th>
-        <td mat-cell *matCellDef="let row">
-          <button mat-raised-button color="primary" type="submit">
-            <mat-icon aria-label="icon">edit</mat-icon>
-          </button>
-          <button mat-raised-button color="warning" type="submit">Eliminar</button>
-        </td>
-      </ng-container>   
-  
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-  
-    <mat-paginator #paginator [length]="dataSource?.data.length" [pageIndex]="0" [pageSize]="50"
-      [pageSizeOptions]="[25, 50, 100, 250]">
-    </mat-paginator>
-  </div>
+  <table mat-table class="full-width-table" matSort aria-label="Productos">
+    <!-- Id Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+      <td mat-cell *matCellDef="let row">{{row.id}}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+      <td mat-cell *matCellDef="let row">{{row.nombre}}</td>
+    </ng-container>
+
+    <!-- Peso Column -->
+    <ng-container matColumnDef="peso">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Peso</th>
+      <td mat-cell *matCellDef="let row">{{row.peso}}</td>
+    </ng-container>
+
+    <!-- Unidad Column -->
+    <ng-container matColumnDef="unidad">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Unidad</th>
+      <td mat-cell *matCellDef="let row">{{row.unidad}}</td>
+    </ng-container>
+
+    <!-- PesoUnd Column -->
+    <ng-container matColumnDef="pesoUnd">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>PesoUnd</th>
+      <td mat-cell *matCellDef="let row">{{row.pesoUnd}}</td>
+    </ng-container>
+
+    <!-- Clase Column -->
+    <ng-container matColumnDef="clase">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Clase</th>
+      <td mat-cell *matCellDef="let row">{{row.clase.nombre}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef>
+        <a mat-raised-button color="primary" [routerLink] = "['/productos/nuevo']">
+          <mat-icon aria-label="icon">add</mat-icon>
+          Nuevo producto
+        </a>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-button color="accent" type="submit">
+          <mat-icon aria-label="icon">edit</mat-icon>
+        </button>
+        <button mat-button color="warn" type="submit">
+          <mat-icon aria-label="icon">delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator #paginator [length]="dataSource?.data.length" [pageIndex]="0" [pageSize]="50"
+    [pageSizeOptions]="[25, 50, 100, 250]">
+  </mat-paginator>
+</div>

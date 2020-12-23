@@ -5,13 +5,13 @@
       [opened]="(isHandset$ | async) === false">
     <mat-toolbar><mat-icon>local_shipping</mat-icon> Bodega4</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item [routerLink] = "['/ingreso']" routerLinkActive>Ingresos</a>
-      <a mat-list-item [routerLink] = "['/salida']" routerLinkActive>Salidas</a>
-      <a mat-list-item [routerLink] = "['/productos']" routerLinkActive>Productos</a>
+      <a mat-list-item [routerLink] = "['/ingreso']" routerLinkActive><mat-icon>arrow_forward</mat-icon>  Ingresos</a>
+      <a mat-list-item [routerLink] = "['/salida']" routerLinkActive><mat-icon>arrow_back</mat-icon> Salidas</a>
+      <a mat-list-item [routerLink] = "['/productos']" routerLinkActive><mat-icon>bookmark</mat-icon> Productos</a>
       <h2 matSubheader>Reportes</h2>
-        <a mat-list-item  [routerLink] = "['/reportes/visual']" routerLinkActive>Visual</a>
-        <a mat-list-item  [routerLink] = "['/reportes/productos']" routerLinkActive>Productos</a>
-        <a mat-list-item  [routerLink] = "['/reportes/inventario']" routerLinkActive>Inventarios</a>
+        <a mat-list-item  [routerLink] = "['/reportes/visual']" routerLinkActive><mat-icon>remove_red_eye</mat-icon> Visual</a>
+        <a mat-list-item  [routerLink] = "['/reportes/productos']" routerLinkActive><mat-icon>bookmark</mat-icon> Productos</a>
+        <a mat-list-item  [routerLink] = "['/reportes/inventario']" routerLinkActive><mat-icon>view_module</mat-icon> Inventarios</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

@@ -23,4 +23,8 @@ export class ProductosService {
   getProducto(id: string): Observable<Producto> {
     return this.http.get<Producto>(`${environment.urlApi}clientes/${id}`);
   }
+
+  postProducto(producto: Producto): Observable<any> {
+    return this.http.post<Producto>(`${environment.urlApi}productos`, producto);
+  }
 }

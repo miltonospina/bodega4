@@ -78,8 +78,6 @@
           </mat-form-field>
         </div>
       </div>
-    </mat-card-content>
-    <mat-card-actions>
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
@@ -94,6 +92,8 @@
           <mat-checkbox formControlName="multiple" [disabled]="!posibleMultiple"></mat-checkbox>
         </div>
       </div>
+    </mat-card-content>
+    <mat-card-actions>      
       <div class="row">
         <div class="col">
           <button mat-raised-button color="primary" type="submit" [disabled]="!ingresoForm.valid">Ingresar</button>
