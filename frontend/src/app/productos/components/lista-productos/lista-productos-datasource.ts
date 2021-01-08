@@ -66,6 +66,7 @@ export class ListaProductosDataSource extends DataSource<Producto> {
       const isAsc = this.sort.direction === 'asc';
       switch (this.sort.active) {
         case 'id': return compare(+a.id, +b.id, isAsc);
+        case 'codigo': return compare(+a.codigoProvidencia, +b.codigoProvidencia, isAsc);
         case 'nombre': return compare(+a.nombre, +b.nombre, isAsc);
         case 'pesoUnd': return compare(+a.pesoUnd, +b.pesoUnd, isAsc);
         case 'peso': return compare(+a.peso, +b.peso, isAsc);

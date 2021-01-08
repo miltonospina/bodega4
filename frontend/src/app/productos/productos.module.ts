@@ -15,12 +15,14 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { DialogoEliminarProductoComponent } from './dialogo-eliminar-producto/dialogo-eliminar-producto.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 
 
 @NgModule({
-  declarations: [ListaProductosComponent, NuevoProductoComponent],
+  declarations: [ListaProductosComponent, NuevoProductoComponent, DialogoEliminarProductoComponent],
   imports: [
     CommonModule,
     ProductosRoutingModule,
@@ -34,7 +36,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatPaginatorModule,
     MatSortModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule
   ]
 })
 export class ProductosModule { }
