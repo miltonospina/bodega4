@@ -75,7 +75,7 @@ namespace b4backend.Controllers
                 }
             }
 
-            return NoContent();
+            return CreatedAtAction("GetProductos", new { id = productos.Id }, productos);
         }
 
         // POST: api/Productos

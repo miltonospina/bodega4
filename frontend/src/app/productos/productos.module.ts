@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ListaProductosComponent } from './components/lista-productos/lista-productos.component';
 import { NuevoProductoComponent } from './components/nuevo-producto/nuevo-producto.component';
+import { EditarProductoComponent } from './components/editar-producto/editar-producto.component';
 import { ProductosRoutingModule } from './productos-routing.module';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -22,7 +23,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 
 @NgModule({
-  declarations: [ListaProductosComponent, NuevoProductoComponent, DialogoEliminarProductoComponent],
+  declarations: [ListaProductosComponent, NuevoProductoComponent, DialogoEliminarProductoComponent, EditarProductoComponent],
   imports: [
     CommonModule,
     ProductosRoutingModule,

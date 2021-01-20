@@ -44,9 +44,9 @@
         </a>
       </th>
       <td mat-cell *matCellDef="let row">
-        <button mat-button color="accent">
+        <a mat-button color="accent" [routerLink] = "['/productos/editar', row.id]">
           <mat-icon aria-label="icon">edit</mat-icon>
-        </button>
+        </a>
         <button mat-button color="warn" (click)="openDeleteDialog(row)">
           <mat-icon aria-label="icon">delete</mat-icon>
         </button>
