@@ -30,7 +30,7 @@ namespace b4backend.Models
         public virtual DbSet<VPosicionesActual> VPosicionesActual { get; set; }
         public virtual DbSet<VReporteVisual> VReporteVisual { get; set; }
 
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Clases>(entity =>
@@ -146,6 +146,11 @@ namespace b4backend.Models
                 entity.ToTable("productos", "bodega4");
 
                 entity.Property(e => e.Bultos).HasColumnName("bultos");
+
+                entity.Property(e => e.CodigoProvidencia)
+                    .HasColumnName("codigoProvidencia")
+                    .HasMaxLength(50);
+
 
                 entity.Property(e => e.ClaseId).HasColumnName("claseId");
 

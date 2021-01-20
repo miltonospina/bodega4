@@ -2,13 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Ingreso } from 'src/app/core/models/ingreso';
-import { Producto } from 'src/app/core/models/producto.model';
 import { Clase } from 'src/app/core/models/clase.model';
 import { BodegaService } from 'src/app/core/services/bodega.service';
 import { ProductosService } from 'src/app/core/services/productos.service';
 import { Cliente } from '../../../core/models/cliente.model';
 import { ClientesService } from '../../../core/services/clientes.service';
-
 
 @Component({
   selector: 'app-ingreso',
@@ -18,13 +16,15 @@ import { ClientesService } from '../../../core/services/clientes.service';
 export class IngresoComponent implements OnInit {
 
   clientes: Cliente[] = [];
-  productos: Producto[] = [];
+  productos: Clase[] = [];
   clases: Clase[] = [];
   niveles: number[] = [];
   columnas: number[] = [];
 
   ingreso: Ingreso;
   ingresoForm: FormGroup;
+
+  posibleMultiple: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -47,7 +47,7 @@ export class IngresoComponent implements OnInit {
       bultos: [null, Validators.required],
       posicion: [null, [Validators.required, Validators.min(1)]],
       multiple: [false],
-      cantidad: [1, Validators.min(1)]
+      cantidad: [1, [Validators.min(1)]],
     });
     this.onChanges();
   }
@@ -57,7 +57,7 @@ export class IngresoComponent implements OnInit {
       this.ingresoMultiple();
     }
     else {
-      this.ingresoSencillo();
+      this.ingesoSencillo();
     }
   }
 
@@ -99,6 +99,13 @@ export class IngresoComponent implements OnInit {
 
     this.ingresoForm.get('posicion').valueChanges.subscribe(val => {
       this.fetchDisponibilidad(this.ingresoForm.get('columna').value, this.ingresoForm.get('nivel').value);
+      if (val === undefined || val <= 1) {
+        this.ingresoForm.patchValue({ multiple: false });
+        this.posibleMultiple = false;
+      }
+      else {
+        this.posibleMultiple = true;
+      }
     });
 
   }
@@ -124,8 +131,7 @@ export class IngresoComponent implements OnInit {
     }
   }
 
-
-  ingresoSencillo(): void {
+  ingesoSencillo(): void {
     this.bodegaService.ingresarEstibas({
       nivel: this.ingresoForm.get('nivel').value,
       columna: this.ingresoForm.get('columna').value,
@@ -156,8 +162,10 @@ export class IngresoComponent implements OnInit {
       });
   }
 
+
   ingresoMultiple(): void {
     this.bodegaService.ingresarEstibasMultiple({
+      cantidad: this.ingresoForm.get('cantidad').value,
       ingreso: {
         nivel: this.ingresoForm.get('nivel').value,
         columna: this.ingresoForm.get('columna').value,
@@ -168,20 +176,17 @@ export class IngresoComponent implements OnInit {
           clienteId: this.ingresoForm.get('cliente').value.id,
           bultos: this.ingresoForm.get('bultos').value
         }
-      },
-      cantidad: this.ingresoForm.get('cantidad').value
+      }
     })
       .subscribe(rs => {
         if (rs instanceof Array) {
           this.snackBar.open(
-            `Se registró el ingreso de ${rs.length} estibas`,
+            `Se ingresaron ${rs.length} la estiba en la posición [${rs[0].columna}][${rs[0].nivel}][${rs[0].posicion}] fecha: ${rs[0].fecha}`,
             'Ok',
             { duration: 3000 }
           );
-          this.ingresoForm.patchValue({
-            posicion: (rs[rs.length - 1].posicion - 1),
-            cantidad: 1
-          });
+          this.ingresoForm.patchValue({ posicion: (rs[rs.length - 1].posicion - 1) });
+          this.ingresoForm.patchValue({ cantidad: 1 });
         }
         else {
           this.snackBar.open(

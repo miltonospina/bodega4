@@ -16,7 +16,24 @@ export class ProductosService {
     return this.http.get<Clase[]>(`${environment.urlApi}clases/productos`);
   }
 
+  getProductos(): Observable<Producto[]> {
+    return this.http.get<Producto[]>(`${environment.urlApi}productos`);
+  }
+
   getProducto(id: string): Observable<Producto> {
-    return this.http.get<Producto>(`${environment.urlApi}clientes/${id}`);
+    return this.http.get<Producto>(`${environment.urlApi}productos/${id}`);
+  }
+
+  postProducto(producto: Producto): Observable<any> {
+    return this.http.post<Producto>(`${environment.urlApi}productos`, producto);
+  }
+
+  deleteProducto(id: number): Observable<any> {
+    return this.http.delete<Producto>(`${environment.urlApi}productos/${id}`);
+
+  }
+
+  putProducto(producto: Producto): Observable<any> {
+    return this.http.put<Producto>(`${environment.urlApi}productos/${producto.id}`, producto);
   }
 }

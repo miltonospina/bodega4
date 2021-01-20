@@ -11,6 +11,7 @@ namespace b4backend.Models
         }
 
         public int Id { get; set; }
+        public string CodigoProvidencia { get; set; }
         public int ClaseId { get; set; }
         public string Nombre { get; set; }
         public float? PesoUnd { get; set; }

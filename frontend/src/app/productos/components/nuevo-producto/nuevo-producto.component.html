@@ -1,0 +1,78 @@
+<form [formGroup]="nuevoProductoForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Nuevo producto</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Código" formControlName="codigo">
+            <mat-error *ngIf="nuevoProductoForm.controls['codigo'].hasError('required')">
+              El código del producto es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Nombre" formControlName="nombre">
+            <mat-error *ngIf="nuevoProductoForm.controls['nombre'].hasError('required')">
+              El nombre del producto es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Clase" formControlName="clase">
+              <mat-option *ngFor="let clase of clases" [value]="clase.id">
+                {{ clase.nombre }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="nuevoProductoForm.controls['clase'].hasError('required')">
+              La clase es <strong>requireda</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Peso" formControlName="peso"/>
+            <mat-error *ngIf="nuevoProductoForm.controls['peso'].hasError('required')">
+              El peso es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Peso Und" formControlName="pesoUnd"/>
+            <mat-error *ngIf="nuevoProductoForm.controls['pesoUnd'].hasError('required')">
+              El pesoUnd es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Unidad" formControlName="unidad"/>
+            <mat-error *ngIf="nuevoProductoForm.controls['unidad'].hasError('required')">
+              Unidad es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Bultos" formControlName="bultos"/>
+            <mat-error *ngIf="nuevoProductoForm.controls['bultos'].hasError('required')">
+              Bultos es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!nuevoProductoForm.valid">Agregar</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

@@ -20,8 +20,9 @@
         <div class="col">
           <mat-form-field class="full-width">
             <mat-select formControlName="producto" placeholder="Producto">
-              <mat-optgroup  *ngFor="let clase of clases" [label]="clase.nombre">
-                <mat-option *ngFor="let producto of clase.productos" [value]="producto">{{producto.id}}: {{producto.nombre}}</mat-option>
+              <mat-optgroup *ngFor="let clase of clases" [label]="clase.nombre">
+                <mat-option *ngFor="let producto of clase.productos" [value]="producto">{{producto.id}}:
+                  {{producto.nombre}}</mat-option>
               </mat-optgroup>
             </mat-select>
             <mat-error *ngIf="ingresoForm.controls['producto'].hasError('required')">
@@ -77,8 +78,6 @@
           </mat-form-field>
         </div>
       </div>
-    </mat-card-content>
-    <mat-card-actions>
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
@@ -90,23 +89,19 @@
         </div>
         <div class="col">
           <span>Ingreso Múltiple</span>
-          <mat-checkbox formControlName="multiple"></mat-checkbox>          
+          <mat-checkbox formControlName="multiple" [disabled]="!posibleMultiple"></mat-checkbox>
         </div>
       </div>
+    </mat-card-content>
+    <mat-card-actions>      
       <div class="row">
         <div class="col">
-          <mat-slider
-          thumbLabel
-          min="1"
-          max="{{ingresoForm.get('posicion').value}}"
-          step="1"
-          formControlName="cantidad"
-          disabled="{{!ingresoForm.get('multiple').value}}"
-        ></mat-slider>
-        <span>{{ingresoForm.get('cantidad').value}}/{{ingresoForm.get('posicion').value}}</span>
-        </div>
-        <div class="col">
           <button mat-raised-button color="primary" type="submit" [disabled]="!ingresoForm.valid">Ingresar</button>
+        </div>
+        <div class="col" *ngIf="ingresoForm.get('multiple').value">
+          <mat-slider thumbLabel min="1" max="{{ingresoForm.get('posicion').value}}" step="1" formControlName="cantidad"
+            disabled="{{!ingresoForm.get('multiple').value}}"></mat-slider>
+          <span>{{ingresoForm.get('cantidad').value}}/{{ingresoForm.get('posicion').value}}</span>
         </div>
       </div>
     </mat-card-actions>
