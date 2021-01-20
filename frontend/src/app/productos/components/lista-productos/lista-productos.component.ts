@@ -5,7 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { Producto } from 'src/app/core/models/producto.model';
 import { ProductosService } from 'src/app/core/services/productos.service';
-import { DialogoEliminarProductoComponent } from '../../dialogo-eliminar-producto/dialogo-eliminar-producto.component';
+import { DialogoEliminarProductoComponent } from '../dialogo-eliminar-producto/dialogo-eliminar-producto.component';
 import { ListaProductosDataSource } from './lista-productos-datasource';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -45,7 +45,7 @@ export class ListaProductosComponent implements AfterViewInit, OnInit {
     this.table.dataSource = this.dataSource;
   }
 
-  openDialog(producto: Producto): void {
+  openDeleteDialog(producto: Producto): void {
     const dialogRef = this.dialog.open(DialogoEliminarProductoComponent);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -61,6 +61,7 @@ export class ListaProductosComponent implements AfterViewInit, OnInit {
       subscribe(rs => {
         if (rs.id) {
           this.dataSource.loadListado();
+          this.dataSource.sort.direction = 'desc';
           this.snackBar.open('Producto eliminado exitosamente', 'Ok', { duration: 3000 });
         } else {
           this.snackBar.open(rs, 'Ok', { duration: 3000 });

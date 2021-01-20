@@ -81,7 +81,10 @@ export class ListaProductosDataSource extends DataSource<Producto> {
     this.productosService.getProductos()
       .subscribe(res => {
         this.data = res;
+        this.paginator._changePageSize(this.paginator.pageSize);
+        console.log('loadListado()');
       });
+
   }
 }
 

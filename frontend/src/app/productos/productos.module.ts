@@ -15,7 +15,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { DialogoEliminarProductoComponent } from './dialogo-eliminar-producto/dialogo-eliminar-producto.component';
+import { DialogoEliminarProductoComponent } from './components/dialogo-eliminar-producto/dialogo-eliminar-producto.component';
 import { MatDialogModule } from '@angular/material/dialog';
 
 
