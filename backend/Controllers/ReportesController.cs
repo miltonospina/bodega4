@@ -43,5 +43,14 @@ namespace b4backend.Controllers
             return await _context.VInvProductos
             .ToListAsync();
         }
+
+
+        
+        [HttpGet("tuneles")]
+        public async Task<ActionResult<IEnumerable<VReporteTuneles>>> getReporteTuneles()
+        {
+            return await _context.VReporteTuneles
+            .ToListAsync();
+        }
     }
 }
