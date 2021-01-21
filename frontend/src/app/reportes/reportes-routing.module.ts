@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { InventarioComponent } from './components/inventario/inventario.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { ProductosComponent } from './components/productos/productos.component';
+import { TunelesComponent } from './components/tuneles/tuneles.component';
 import { VisualComponent } from './components/visual/visual.component';
 
 const routes: Routes = [
@@ -26,6 +27,10 @@ const routes: Routes = [
   {
     path: 'productos',
     component: ProductosComponent
+  },
+  {
+    path: 'tuneles',
+    component: TunelesComponent
   },
 ];
 

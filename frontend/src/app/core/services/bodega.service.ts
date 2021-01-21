@@ -65,4 +65,8 @@ export class BodegaService {
   getReporteProductos(): Observable<any> {
     return this.http.get(`${environment.urlApi}reportes/productos`);
   }
+
+  getReporteTuneles(): Observable<any> {
+    return this.http.get(`${environment.urlApi}reportes/tuneles`);
+  }
 }

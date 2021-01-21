@@ -15,10 +15,11 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TunelesComponent } from './components/tuneles/tuneles.component';
 
 
 @NgModule({
-  declarations: [MenuComponent, VisualComponent, ProductosComponent, InventarioComponent],
+  declarations: [MenuComponent, VisualComponent, ProductosComponent, InventarioComponent, TunelesComponent],
   imports: [
     CommonModule,
     ReportesRoutingModule,
