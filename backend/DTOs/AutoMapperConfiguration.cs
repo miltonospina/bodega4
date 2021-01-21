@@ -41,6 +41,8 @@ namespace b4backend.DTOs
                     cfg.CreateMap<VPosicionesActual,VPosicionesActualDTO>();
 
                     cfg.CreateMap<VReporteVisual,VReporteVisualDTO>();
+
+                    cfg.CreateMap<VReporteTuneles,VReporteTuneles>();
                 }
                 );
         }

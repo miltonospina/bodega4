@@ -29,6 +29,7 @@ namespace b4backend.Models
         public virtual DbSet<VPaquetesActuales> VPaquetesActuales { get; set; }
         public virtual DbSet<VPosicionesActual> VPosicionesActual { get; set; }
         public virtual DbSet<VReporteVisual> VReporteVisual { get; set; }
+        public virtual DbSet<VReporteTuneles> VReporteTuneles { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -366,6 +367,31 @@ namespace b4backend.Models
                 entity.Property(e => e.Posicion).HasColumnName("posicion");
 
                 entity.Property(e => e.Sentido).HasColumnName("sentido");
+            });
+
+            modelBuilder.Entity<VReporteTuneles>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("v_tuneles", "bodega4");
+
+                entity.Property(e => e.FechaIngreso).HasColumnName("fecha_ingreso");
+
+                entity.Property(e => e.Columna).HasColumnName("columna");
+
+                entity.Property(e => e.Nivel).HasColumnName("nivel");
+
+                entity.Property(e => e.Producto).HasColumnName("producto");
+
+                entity.Property(e => e.Lote).HasColumnName("lote");
+
+                entity.Property(e => e.CodigoProvidencia).HasColumnName("codigoProvidencia");
+
+                entity.Property(e => e.Cliente).HasColumnName("cliente");
+
+                entity.Property(e => e.Estibas).HasColumnName("estibas");
+
+                entity.Property(e => e.sbultos).HasColumnName("sbultos");
             });
 
             OnModelCreatingPartial(modelBuilder);
