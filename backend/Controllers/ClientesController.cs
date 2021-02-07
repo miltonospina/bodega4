@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using b4backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace b4backend.Controllers
 {
@@ -29,6 +30,7 @@ namespace b4backend.Controllers
 
         // GET: api/Clientes/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<Clientes>> GetClientes(int id)
         {
             var clientes = await _context.Clientes.FindAsync(id);
@@ -45,6 +47,7 @@ namespace b4backend.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutClientes(int id, Clientes clientes)
         {
             if (id != clientes.Id)
