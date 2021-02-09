@@ -9,11 +9,13 @@ using b4backend.Models;
 using b4backend.BLL;
 using b4backend.Objects;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace b4backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EstibasController : ControllerBase
     {
         private readonly bodega4Context _context;

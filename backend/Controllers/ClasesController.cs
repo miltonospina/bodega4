@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using b4backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace b4backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ClasesController : ControllerBase
     {
         private readonly bodega4Context _context;
@@ -38,6 +40,7 @@ namespace b4backend.Controllers
 
         // GET: api/Clases/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<Clases>> GetClases(int id)
         {
             var clases = await _context.Clases.FindAsync(id);
@@ -54,6 +57,7 @@ namespace b4backend.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutClases(int id, Clases clases)
         {
             if (id != clases.Id)
@@ -86,6 +90,7 @@ namespace b4backend.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Clases>> PostClases(Clases clases)
         {
             _context.Clases.Add(clases);
@@ -96,6 +101,7 @@ namespace b4backend.Controllers
 
         // DELETE: api/Clases/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult<Clases>> DeleteClases(int id)
         {
             var clases = await _context.Clases.FindAsync(id);

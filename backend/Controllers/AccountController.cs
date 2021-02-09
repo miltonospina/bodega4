@@ -16,7 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace b4backend.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     public class AccountController : Controller
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -42,7 +42,7 @@ namespace b4backend.Controllers
             if (result.Succeeded)
             {
                 var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
-                return GenerateJwtToken(model.Email, appUser);
+                return new {token = GenerateJwtToken(model.Email, appUser)};
             }
             else{
                 return StatusCode(401, new {mensaje = "Error, usuario y clave invalidos"});
@@ -64,7 +64,7 @@ namespace b4backend.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
-                return new  {token = GenerateJwtToken(model.Email, user)};
+                return new {token = GenerateJwtToken(model.Email, user)};
             }
             
             throw new ApplicationException("UNKNOWN_ERROR");

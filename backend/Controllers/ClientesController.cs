@@ -12,6 +12,7 @@ namespace b4backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ClientesController : ControllerBase
     {
         private readonly bodega4Context _context;

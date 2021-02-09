@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using b4backend.Models;
 using b4backend.BLL;
+using Microsoft.AspNetCore.Authorization;
 
 namespace b4backend.Controllers
 {
@@ -25,6 +26,7 @@ namespace b4backend.Controllers
 
         // GET: api/Layout
         [HttpGet]
+        [Authorize]
         public ActionResult Getlayout()
         {   
             return Ok(new {
@@ -35,6 +37,7 @@ namespace b4backend.Controllers
         }
 
         [HttpGet("{col}/{niv}")]
+        [Authorize]
         public ActionResult getDisponible(int col, int niv){
 
             Movimientos entrada = new Movimientos();
