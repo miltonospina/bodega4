@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { AuthService } from '../core/services/auth.service';
 import { Router } from '@angular/router';
+import { Usuario } from '../core/models/usuario';
 
 @Component({
   selector: 'app-layout',
@@ -11,6 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./layout.component.css']
 })
 export class LayoutComponent {
+  usuarioActual: Usuario;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -21,7 +23,9 @@ export class LayoutComponent {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private authService: AuthService,
-    private router: Router) { }
+    private router: Router) {
+      this.authService.userData$.subscribe(usuario => this.usuarioActual = usuario);
+    }
 
   salir(): void {
     this.authService.deleteToken();

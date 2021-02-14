@@ -42,10 +42,11 @@ namespace b4backend.Controllers
             if (result.Succeeded)
             {
                 var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
-                return new {token = GenerateJwtToken(model.Email, appUser)};
+                return new { token = GenerateJwtToken(model.Email, appUser) };
             }
-            else{
-                return StatusCode(401, new {mensaje = "Error, usuario y clave invalidos"});
+            else
+            {
+                return StatusCode(401, new { mensaje = "Error, usuario y clave invalidos" });
             }
 
             throw new ApplicationException("INVALID_LOGIN_ATTEMPT");
@@ -56,34 +57,62 @@ namespace b4backend.Controllers
         {
             var user = new IdentityUser
             {
-                UserName = model.Email,
-                Email = model.Email
+                UserName = model.UserName,
+                Email = model.Email,
             };
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
-                return new {token = GenerateJwtToken(model.Email, user)};
+                return new { mensaje = "Usuario creado exitosamente" };
             }
-            
-            throw new ApplicationException("UNKNOWN_ERROR");
+            else
+            {
+                return StatusCode(400, new { result.Errors });
+            }
         }
 
 
         [HttpGet]
         [Authorize]
-        public List<IdentityUser> List()
+        public List<UserDto> List()
         {
-            return _userManager.Users.ToList();
+            return _userManager.Users.ToList().Select(u => new UserDto(u)).ToList();
+        }
+
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<object> updateUser(string id, [FromBody] UserDto model)
+        {
+            if (id != model.Id)
+            {
+                return BadRequest();
+            }
+            var user = await _userManager.FindByIdAsync(model.Id);
+            user.UserName = model.UserName;
+            user.Email = model.Email;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                return new { mensaje = "Usuario actualizado exitosamente" };
+            }
+            else
+            {
+                return StatusCode(400, new { result.Errors });
+            }
         }
 
         private object GenerateJwtToken(string email, IdentityUser user)
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, email),
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Email, email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.NameId, user.Id),
                 new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
 
@@ -116,10 +145,31 @@ namespace b4backend.Controllers
         {
             [Required]
             public string Email { get; set; }
+            public string UserName { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "PASSWORD_MIN_LENGTH", MinimumLength = 6)]
             public string Password { get; set; }
+        }
+
+
+        public class UserDto
+        {
+            public UserDto(IdentityUser user)
+            {
+                this.Id = user.Id;
+                this.Email = user.Email;
+                this.UserName = user.UserName;
+
+            }
+            [Required]
+            public string Id { get; set; }
+
+            [Required]
+            public string Email { get; set; }
+
+            [Required]
+            public string UserName { get; set; }
         }
     }
 }

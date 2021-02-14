@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Usuario } from '../models/usuario';
 
 export const TOKEN_NAME = 'jwt_token';
 
@@ -12,6 +13,10 @@ export const TOKEN_NAME = 'jwt_token';
 })
 export class AuthService {
 
+  private user: Usuario;
+  private userData = new BehaviorSubject<Usuario>(null);
+  userData$ = this.userData.asObservable();
+
   constructor(private http: HttpClient) { }
 
   getToken(): string {
@@ -20,16 +25,29 @@ export class AuthService {
 
   setToken(token: string): void {
     localStorage.setItem(TOKEN_NAME, token);
+    const data = this.getTokenData(token);
+    console.log(data);
+    this.user = {userName: data.sub, email: data.email, id: data.nameid };
+    this.userData.next(this.user);
+    console.log(this.user);
+
   }
 
   deleteToken(): void{
     localStorage.removeItem(TOKEN_NAME);
+    this.user = null;
   }
 
   getTokenExpirationDate(token: string): Date {
     const helper = new JwtHelperService();
     const expirationDate = helper.getTokenExpirationDate(token);
     return expirationDate;
+  }
+
+  getTokenData(token: string): any {
+    const helper = new JwtHelperService();
+    const data = helper.decodeToken(token);
+    return data;
   }
 
   isTokenExpired(token?: string): boolean {
