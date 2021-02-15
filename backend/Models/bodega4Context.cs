@@ -1,15 +1,11 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace b4backend.Models
 {
-    public partial class bodega4Context : DbContext
+    public partial class bodega4Context : IdentityDbContext
     {
-        public bodega4Context()
-        {
-        }
-
         public bodega4Context(DbContextOptions<bodega4Context> options)
             : base(options)
         {
@@ -34,6 +30,8 @@ namespace b4backend.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            
             modelBuilder.Entity<Clases>(entity =>
             {
                 entity.ToTable("clases", "bodega4");

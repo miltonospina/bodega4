@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from './auth.guard';
 import { LayoutComponent } from './layout/layout.component';
+import { LoginComponent } from './login/login/login.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 
 const routes: Routes = [
@@ -29,7 +31,12 @@ const routes: Routes = [
         redirectTo: 'ingreso',
         pathMatch: 'full',
       }
-    ]
+    ],
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'login',
+    component: LoginComponent
   },
   {
     path: '**',

@@ -115,7 +115,6 @@ export class SalidaComponent implements OnInit {
   }
 
   salidaMultiple(): void {
-    console.log('multiple');
     this.bodegaService.salidaMultiple(this.salidaForm.get('columna').value, this.salidaForm.get('nivel').value, this.salidaForm.get('cantidad').value)
     .subscribe(rs => {
       if (rs instanceof Array) {

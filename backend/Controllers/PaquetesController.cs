@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using b4backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace b4backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PaquetesController : ControllerBase
     {
         private readonly bodega4Context _context;

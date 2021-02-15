@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using b4backend.Models;
 using b4backend.BLL;
+using Microsoft.AspNetCore.Authorization;
 
 namespace b4backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ReportesController : ControllerBase
     {
         private readonly bodega4Context _context;
