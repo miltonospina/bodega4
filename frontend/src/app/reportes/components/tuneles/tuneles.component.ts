@@ -25,6 +25,7 @@ export class TunelesComponent implements AfterViewInit, OnInit {
     'columna',
     'codigo',
     'producto',
+    'lote',
     'estibas',
     'bultos',
     'cliente'];
