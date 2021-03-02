@@ -11,7 +11,23 @@
             height="19"
             class="paquete vacio">
             </rect>
+            <text
+            x="1"
+            [attr.y]="((dim.y + (col * dim.ycubo)) + ((col -1) * dim.yespacio) + 12.5)" 
+            font-family="Verdana" font-size="10">
+            {{col}}
+            </text>
         </g>
+        <g>
+            <text *ngFor="let pos of posiciones"
+            [attr.x]="((dim.x + (pos * dim.xcubo))+ ((pos -1) * dim.xespacio)) + 2"
+            font-family="Verdana" font-size="10"
+            y="13">
+            {{pos}}
+            </text>
+        </g>
+       
+            
         <!-- REALES -->
         <rect *ngFor="let item of contenidoBodega[niv - 1]"
         [attr.width]="dim.xcubo"
