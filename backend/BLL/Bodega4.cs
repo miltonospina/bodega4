@@ -149,7 +149,13 @@ namespace b4backend.BLL
             mIngreso.Sentido = 1;
 
             mIngreso.Paquetes.Bultos = paqueteActual.Bultos - bultosSalen;
-            if (mIngreso.Paquetes.Bultos < 0)
+
+            if(mIngreso.Paquetes.Bultos == 0)
+            {
+                return new[] {
+                    "Acción inválida: Si requiere realizar esta operación, por favor haga una salida completa"
+                    };
+            }else if (mIngreso.Paquetes.Bultos < 0)
             {
                 return new[] {
                     "Imposible hacer salida por "+ bultosSalen +" bultos, solo hay "+paqueteActual.Bultos + " disponibles"
