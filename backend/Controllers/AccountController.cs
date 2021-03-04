@@ -90,6 +90,7 @@ namespace b4backend.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         public async Task<object> crearRol(string nombreRol)
         {
             var result = await _roleManager.CreateAsync(new IdentityRole(nombreRol));
@@ -106,7 +107,7 @@ namespace b4backend.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Administrador, Operador")]
         public List<UserDto> List()
         {
             return _userManager.Users.ToList().Select(u => new UserDto(u)).ToList();
@@ -114,7 +115,7 @@ namespace b4backend.Controllers
 
 
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Administrador, Operador")]
         public async Task<object> updateUser(string id, [FromBody] UserDto model)
         {
             if (id != model.Id)
