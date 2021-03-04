@@ -15,7 +15,7 @@ namespace b4backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Administrador, Operador")]
     public class EstibasController : ControllerBase
     {
         private readonly bodega4Context _context;
@@ -103,8 +103,6 @@ namespace b4backend.Controllers
             }
         }
 
-
-
         // GET: api/Estibas/5/5
         [HttpGet("{columna}/{nivel}")]
         public async Task<ActionResult> getPrimero(int columna, int nivel)
@@ -116,7 +114,6 @@ namespace b4backend.Controllers
             object rs = await _bodega4.getPrimero(mov);
             return Ok(new { respuesta = rs });
         }
-
 
         // POST: api/estibas/multiples
         [HttpPost("multiple")]
@@ -141,7 +138,6 @@ namespace b4backend.Controllers
                 return CreatedAtAction("GetMovimientos", "Movimientos", new { id = 0 }, rs);
             }
         }
-
 
         // DELETE: api/Estibas/multiple
         [HttpDelete("multiple")]

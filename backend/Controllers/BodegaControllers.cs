@@ -14,6 +14,7 @@ namespace b4backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Administrador, Operador")]
     public class BodegaController : ControllerBase
     {
         private readonly bodega4Context _context;
@@ -27,7 +28,6 @@ namespace b4backend.Controllers
 
         // GET: api/Layout
         [HttpGet]
-        [Authorize]
         public ActionResult Getlayout()
         {   
             return Ok(new {
@@ -38,7 +38,6 @@ namespace b4backend.Controllers
         }
 
         [HttpGet("{col}/{niv}")]
-        [Authorize]
         public ActionResult getDisponible(int col, int niv){
 
             Movimientos entrada = new Movimientos();
@@ -90,7 +89,6 @@ namespace b4backend.Controllers
                 _context.SaveChanges();
 
             }
-
 
             return Ok( new { largo = listado.Length });
         }

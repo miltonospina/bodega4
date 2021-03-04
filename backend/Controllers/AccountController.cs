@@ -21,10 +21,12 @@ namespace b4backend.Controllers
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
 
         public AccountController(
             UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager,
             SignInManager<IdentityUser> signInManager,
             IConfiguration configuration
             )
@@ -32,6 +34,7 @@ namespace b4backend.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
+            _roleManager = roleManager;
         }
 
         [HttpPost]
@@ -42,7 +45,8 @@ namespace b4backend.Controllers
             if (result.Succeeded)
             {
                 var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
-                return new { token = GenerateJwtToken(model.Email, appUser) };
+                var userRole = await _userManager.GetRolesAsync(appUser);
+                return new { token = GenerateJwtToken(model.Email, appUser, userRole) };
             }
             else
             {
@@ -53,8 +57,11 @@ namespace b4backend.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         public async Task<object> Register([FromBody] RegisterDto model)
         {
+            //return new { hola = this.HttpContext.User.IsInRole("Administrador")};
+            
             var user = new IdentityUser
             {
                 UserName = model.UserName,
@@ -62,10 +69,19 @@ namespace b4backend.Controllers
             };
             var result = await _userManager.CreateAsync(user, model.Password);
 
+
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(user, false);
-                return new { mensaje = "Usuario creado exitosamente" };
+                var result2 = await _userManager.AddToRoleAsync(user, model.Role);
+                if (result2.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, false);
+                    return new { mensaje = "Usuario creado exitosamente" };
+                }
+                else
+                {
+                    return StatusCode(400, new { result.Errors });
+                }
             }
             else
             {
@@ -73,9 +89,25 @@ namespace b4backend.Controllers
             }
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Administrador")]
+        public async Task<object> crearRol(string nombreRol)
+        {
+            var result = await _roleManager.CreateAsync(new IdentityRole(nombreRol));
+
+            if (result.Succeeded)
+            {
+                return new { mensaje = "Rol creado exitosamente" };
+            }
+            else
+            {
+                return StatusCode(400, new { result.Errors });
+            }
+
+        }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Administrador, Operador")]
         public List<UserDto> List()
         {
             return _userManager.Users.ToList().Select(u => new UserDto(u)).ToList();
@@ -83,7 +115,7 @@ namespace b4backend.Controllers
 
 
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Administrador, Operador")]
         public async Task<object> updateUser(string id, [FromBody] UserDto model)
         {
             if (id != model.Id)
@@ -105,17 +137,19 @@ namespace b4backend.Controllers
             }
         }
 
-        private object GenerateJwtToken(string email, IdentityUser user)
-        {
+        private object GenerateJwtToken(string email, IdentityUser user, IList<string> userRole)
+        {   
+            
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Email, email),
+                new Claim(ClaimTypes.Role, userRole[0]),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.NameId, user.Id),
                 new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
-
+            
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtKey"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var expires = DateTime.Now.AddDays(Convert.ToDouble(_configuration["JwtExpireDays"]));
@@ -150,6 +184,8 @@ namespace b4backend.Controllers
             [Required]
             [StringLength(100, ErrorMessage = "PASSWORD_MIN_LENGTH", MinimumLength = 6)]
             public string Password { get; set; }
+
+            public string Role { get; set; }
         }
 
 
