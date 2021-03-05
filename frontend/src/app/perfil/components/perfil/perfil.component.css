@@ -1,0 +1,17 @@
+.example-card {
+    max-width: 400px;
+}
+  
+.example-header-image {
+    background-image: url('https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png');
+    background-size: cover;
+}
+
+
+.principal {
+    margin-top: 3%;
+    margin-bottom: 3%;
+    place-items: center;
+    display: flex;
+    justify-content: center;
+}

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Usuario } from '../models/usuario';
+import jwt_decode from 'jwt-decode';
 
 export const TOKEN_NAME = 'jwt_token';
 
@@ -15,6 +16,8 @@ export class AuthService {
 
   private user: Usuario;
   private userData = new BehaviorSubject<Usuario>(null);
+  private username : string;
+  private rol : string;
   userData$ = this.userData.asObservable();
 
   constructor(private http: HttpClient) { }
@@ -26,11 +29,22 @@ export class AuthService {
   setToken(token: string): void {
     localStorage.setItem(TOKEN_NAME, token);
     const data = this.getTokenData(token);
-    console.log(data);
     this.user = {userName: data.sub, email: data.email, id: data.nameid };
+    this.username = data.sub;
+
+    const decodedToken = jwt_decode(token);
+    this.rol = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
+
     this.userData.next(this.user);
+
+
     console.log(this.user);
 
+  }
+
+  getUserName(): string {
+    console.log(this.rol)
+    return this.username;
   }
 
   deleteToken(): void{
