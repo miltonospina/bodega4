@@ -113,23 +113,66 @@ namespace b4backend.Controllers
             return _userManager.Users.ToList().Select(u => new UserDto(u)).ToList();
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Administrador, Operador")]
+        public async Task<UserDto> verUsuario()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            return new UserDto(user);
+        }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Administrador, Operador")]
-        public async Task<object> updateUser(string id, [FromBody] UserDto model)
+        [Authorize(Roles = "Administrador")]
+        public async Task<object> updateUser(string id, string email)
         {
-            if (id != model.Id)
-            {
-                return BadRequest();
-            }
-            var user = await _userManager.FindByIdAsync(model.Id);
-            user.UserName = model.UserName;
-            user.Email = model.Email;
+            var user = await _userManager.FindByIdAsync(id);
+            user.UserName = email;
+            user.Email = email;
 
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
             {
                 return new { mensaje = "Usuario actualizado exitosamente" };
+            }
+            else
+            {
+                return StatusCode(400, new { result.Errors });
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrador")]
+        public async Task<object> cambiarContrasena(string id, string contrasenaVieja, string contrasenaNueva, string contrasenaNueva2)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if(contrasenaNueva.Equals(contrasenaNueva2))
+            {
+                var result = await _userManager.ChangePasswordAsync(user, contrasenaVieja, contrasenaNueva);
+                if (result.Succeeded)
+                {
+                    return new { mensaje = "Contraseña actualizada exitosamente" };
+                }
+                else
+                {
+                    return StatusCode(400, new { result.Errors });
+                }
+            }else
+            {
+                return new { mensaje = "Las contraseñas no coinciden" };
+            }
+            
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrador")]
+        public async Task<object> deleUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return new { mensaje = "Usuario eliminado exitosamente" };
             }
             else
             {
