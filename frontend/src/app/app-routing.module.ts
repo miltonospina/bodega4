@@ -27,6 +27,10 @@ const routes: Routes = [
         loadChildren: () => import('./productos/productos.module').then(m => m.ProductosModule)
       },
       {
+        path: 'perfil',
+        loadChildren: () => import('./perfil/perfil.module').then(m => m.PerfilModule)
+      },
+      {
         path: '',
         redirectTo: 'ingreso',
         pathMatch: 'full',
