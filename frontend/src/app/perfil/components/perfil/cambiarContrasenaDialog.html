@@ -1,5 +1,5 @@
-<h1 mat-dialog-title>Cambio de contraseña</h1>
-<div >
+<h1 mat-dialog-title style="text-align: center;"><b>Cambio de contraseña</b></h1>
+<div style="text-align: center;">
   <mat-form-field>
     <mat-label>Ingresa tu contraseña</mat-label>
     <input matInput [type]="data.hide1 ? 'password' : 'text'" [(ngModel)]="data.password1">
@@ -21,7 +21,7 @@
     <mat-icon>{{data.hide3 ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
   </mat-form-field>
-  <mat-dialog-actions>
+  <mat-dialog-actions style="align-items: center; justify-content: center;">
     <button mat-button (click)="onNoClick()">Cancelar</button>
     <button mat-button [mat-dialog-close] = "[data.password1, data.password2, data.password3]" cdkFocusInitial>Cambiar</button>
   </mat-dialog-actions>
