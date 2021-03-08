@@ -14,7 +14,7 @@
         <a mat-list-item  [routerLink] = "['/reportes/inventario']" routerLinkActive><mat-icon>view_module</mat-icon> Inventarios</a>
         <a mat-list-item  [routerLink] = "['/reportes/tuneles']" routerLinkActive><mat-icon>list</mat-icon> Tuneles</a>
         <h2 matSubheader>...</h2>
-        <a mat-list-item  [routerLink] = "['/perfil']" routerLinkActive><mat-icon>account_circle</mat-icon>Mi perfil</a>
+        <a mat-list-item  [routerLink] = "['/perfil']" routerLinkActive><mat-icon>account_circle</mat-icon>Perfil</a>
         <a mat-list-item  [routerLink] = "['/gestionarUsuarios']" routerLinkActive><mat-icon>people</mat-icon> Gestionar Usuarios</a>
         <a mat-list-item (click)="salir()"><mat-icon>exit</mat-icon> Salir</a>
     </mat-nav-list>
@@ -29,8 +29,8 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>b4frontend</span> 
-      <span layout-align="end center">Usuario </span>
+      <span>{{username}}</span> <span style="margin-left: 1%;">|</span>
+      <span layout-align="end center" style="font-size: 15px; margin-left: 1%; margin-top: 0.1%;"><i>{{rol}}</i></span>
     </mat-toolbar>
       <router-outlet></router-outlet>
   </mat-sidenav-content>

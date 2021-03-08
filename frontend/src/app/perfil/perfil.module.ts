@@ -4,14 +4,26 @@ import { PerfilRoutingModule} from './perfil-routing.module';
 import { PerfilComponent } from './components/perfil/perfil.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
+import { CambioContrasenaComponent } from './components/cambioContrasena/cambio-contrasena.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
+import {MatInputModule} from '@angular/material/input';
+import {MatDialogModule} from '@angular/material/dialog';
+import {CambioContrasenaDialog} from './components/perfil/perfil.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [PerfilComponent],
+  declarations: [PerfilComponent, CambioContrasenaComponent, CambioContrasenaDialog],
   imports: [
     CommonModule,
     PerfilRoutingModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatDialogModule,
+    FormsModule
   ]
 })
 export class PerfilModule { }

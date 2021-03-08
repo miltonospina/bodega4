@@ -59,9 +59,7 @@ namespace b4backend.Controllers
         [HttpPost]
         [Authorize(Roles = "Administrador")]
         public async Task<object> Register([FromBody] RegisterDto model)
-        {
-            //return new { hola = this.HttpContext.User.IsInRole("Administrador")};
-            
+        {            
             var user = new IdentityUser
             {
                 UserName = model.UserName,
@@ -142,25 +140,18 @@ namespace b4backend.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Administrador")]
-        public async Task<object> cambiarContrasena(string id, string contrasenaVieja, string contrasenaNueva, string contrasenaNueva2)
+        public async Task<object> cambiarContrasena([FromBody] ChangePasswordDTO model)
         {
-            var user = await _userManager.FindByIdAsync(id);
-            if(contrasenaNueva.Equals(contrasenaNueva2))
+            var user = await _userManager.FindByIdAsync(model.id);
+            var result = await _userManager.ChangePasswordAsync(user, model.oldPassword, model.newPassword);
+            if (result.Succeeded)
             {
-                var result = await _userManager.ChangePasswordAsync(user, contrasenaVieja, contrasenaNueva);
-                if (result.Succeeded)
-                {
-                    return new { mensaje = "Contraseña actualizada exitosamente" };
-                }
-                else
-                {
-                    return StatusCode(400, new { result.Errors });
-                }
-            }else
-            {
-                return new { mensaje = "Las contraseñas no coinciden" };
+                return new { mensaje = "Contraseña actualizada exitosamente" };
             }
-            
+            else
+            {
+                return StatusCode(400, new { result.Errors });
+            }
         }
 
         [HttpDelete("{id}")]
@@ -215,6 +206,19 @@ namespace b4backend.Controllers
 
             [Required]
             public string Password { get; set; }
+
+        }
+
+        public class ChangePasswordDTO
+        {
+            [Required]
+            public string id { get; set; }
+
+            [Required]
+            public string oldPassword { get; set; }
+
+            [Required]
+            public string newPassword { get; set; }
 
         }
 

@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Usuario } from '../models/usuario';
 import jwt_decode from 'jwt-decode';
+import Swal from 'sweetalert2';
 
 export const TOKEN_NAME = 'jwt_token';
 
@@ -16,8 +17,6 @@ export class AuthService {
 
   private user: Usuario;
   private userData = new BehaviorSubject<Usuario>(null);
-  private username : string;
-  private rol : string;
   userData$ = this.userData.asObservable();
 
   constructor(private http: HttpClient) { }
@@ -29,22 +28,18 @@ export class AuthService {
   setToken(token: string): void {
     localStorage.setItem(TOKEN_NAME, token);
     const data = this.getTokenData(token);
-    this.user = {userName: data.sub, email: data.email, id: data.nameid };
-    this.username = data.sub;
-
+    this.user = {userName: data.sub, email: data.email, id: data.nameid };  
     const decodedToken = jwt_decode(token);
-    this.rol = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
-
     this.userData.next(this.user);
 
-
-    console.log(this.user);
-
+    localStorage.setItem("id", data.nameid);
+    localStorage.setItem("username", data.sub);
+    localStorage.setItem("rol", decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']);
   }
 
-  getUserName(): string {
-    console.log(this.rol)
-    return this.username;
+  getData(): string[] {
+    let data = [localStorage.getItem("username"), localStorage.getItem("rol"), localStorage.getItem("id")];
+    return data;
   }
 
   deleteToken(): void{
@@ -77,6 +72,14 @@ export class AuthService {
     return this.http.post(`${environment.urlApi}Account/Register`, { email, password });
   }
 
+  cambiarContrasena(password1 : string, password2: string, id: string): Promise<any>{
+    var model = {
+      id: id,
+      oldPassword: password1,
+      newPassword: password2
+    }
+    return this.http.post(`${environment.urlApi}Account/cambiarContrasena`, model).toPromise();
+  }
 
   login(email: string, password: string): Promise<any> {
     return this.http
