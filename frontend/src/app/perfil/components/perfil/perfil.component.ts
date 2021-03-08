@@ -72,8 +72,8 @@ export class PerfilComponent implements OnInit {
 
 }
 @Component({
-  selector: 'dialog-elements-example-dialog',
-  templateUrl: 'dialog-data-example-dialog.html',
+  selector: 'cambiarContrasenaDialog',
+  templateUrl: 'cambiarContrasenaDialog.html',
 })
 export class CambioContrasenaDialog {
   constructor(
