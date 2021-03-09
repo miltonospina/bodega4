@@ -44,29 +44,38 @@ export class PerfilComponent implements OnInit {
       this.password1 = result[0];
       this.password2 = result[1];
       this.password3 = result[2];
-      if(this.password2 === this.password3) {
-        this.authService.cambiarContrasena(this.password1, this.password2, this.id).then(
-          function () { 
-            Swal.fire(
-              'Contraseña actualizada',
-              '',
-              'success'
-            )
-          }, 
-          function () {
-            Swal.fire(
-              'Error',
-              'No se pudo actualizar la contraseña',
-              'error'
-            )
-          });
-      }else {
+      if(this.password1 === '' || this.password2 === '' || this.password3 === '') {
         Swal.fire(
-          'Error',
-          'Las contraseñas no coinciden',
+          'Por favor llenar todos los campos',
+          '',
           'error'
         )
+      }else {
+        if(this.password2 === this.password3) {
+          this.authService.cambiarContrasena(this.password1, this.password2, this.id).then(
+            function () { 
+              Swal.fire(
+                'Contraseña actualizada',
+                '',
+                'success'
+              )
+            }, 
+            function () {
+              Swal.fire(
+                'No se pudo actualizar la contraseña',
+                '',
+                'error'
+              )
+            });
+        }else {
+          Swal.fire(
+            'Las contraseñas no coinciden',
+            '',
+            'error'
+          )
+        }
       }
+      
     });
   }
 
