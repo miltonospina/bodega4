@@ -1,3 +1,7 @@
+* {
+    background: #ffffff;
+}
+
 .example-card {
     max-width: 400px;
 }
@@ -9,8 +13,8 @@
 
 
 .principal {
-    margin-top: 3%;
-    margin-bottom: 3%;
+    padding-top: 3%;
+    padding-bottom: 3%;
     place-items: center;
     display: flex;
     justify-content: center;

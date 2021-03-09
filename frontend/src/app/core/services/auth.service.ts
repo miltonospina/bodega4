@@ -5,7 +5,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Usuario } from '../models/usuario';
 import jwt_decode from 'jwt-decode';
-import Swal from 'sweetalert2';
 
 export const TOKEN_NAME = 'jwt_token';
 
@@ -70,6 +69,20 @@ export class AuthService {
 
   registrarUsuario(email: string, password: string): Observable<any> {
     return this.http.post(`${environment.urlApi}Account/Register`, { email, password });
+  }
+
+  crearUsuario(email: string, password: string, rol: string): Promise<any> {
+    var model = {
+      email: email,
+      username: email,
+      password: password,
+      role: rol
+    }
+    return this.http.post(`${environment.urlApi}Account/Register`, model).toPromise();
+  }
+
+  obtenerUsuarios(): Observable<any> {
+    return this.http.get(`${environment.urlApi}Account/getUsers`);
   }
 
   cambiarContrasena(password1 : string, password2: string, id: string): Promise<any>{

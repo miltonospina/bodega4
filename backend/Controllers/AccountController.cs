@@ -59,7 +59,7 @@ namespace b4backend.Controllers
         [HttpPost]
         [Authorize(Roles = "Administrador")]
         public async Task<object> Register([FromBody] RegisterDto model)
-        {            
+        {    
             var user = new IdentityUser
             {
                 UserName = model.UserName,
@@ -105,10 +105,18 @@ namespace b4backend.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrador, Operador")]
-        public List<UserDto> List()
-        {
-            return _userManager.Users.ToList().Select(u => new UserDto(u)).ToList();
+        [Authorize(Roles = "Administrador")]
+        public async Task<List<UsersDto>> getUsers() {
+            List<UsersDto> result = new List<UsersDto>();
+            List<IdentityUser> users = _userManager.Users.ToList();
+            for (int i = 0; i < users.Count; i++)
+            {
+                var id = users[i].Id;
+                var email = users[i].Email;
+                var role = await _userManager.GetRolesAsync(users[i]);
+                result.Add(new UsersDto(id, email, role[0]));
+            }
+            return result;
         }
 
         [HttpGet]
@@ -232,6 +240,7 @@ namespace b4backend.Controllers
             [StringLength(100, ErrorMessage = "PASSWORD_MIN_LENGTH", MinimumLength = 6)]
             public string Password { get; set; }
 
+            [Required]
             public string Role { get; set; }
         }
 
@@ -253,6 +262,25 @@ namespace b4backend.Controllers
 
             [Required]
             public string UserName { get; set; }
+        }
+
+        public class UsersDto
+        {
+            public UsersDto(string id, string email, string role)
+            {
+                this.Id = id;
+                this.Email = email;
+                this.Role = role;
+
+            }
+            [Required]
+            public string Id { get; set; }
+
+            [Required]
+            public string Email { get; set; }
+
+            [Required]
+            public string Role { get; set; }
         }
     }
 }
