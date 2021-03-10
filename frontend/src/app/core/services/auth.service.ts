@@ -85,6 +85,10 @@ export class AuthService {
     return this.http.get(`${environment.urlApi}Account/getUsers`);
   }
 
+  eliminarUsuario(id: string): Promise<any> {
+    return this.http.delete(`${environment.urlApi}Account/deletUser/${id}`).toPromise();
+  }
+
   cambiarContrasena(password1 : string, password2: string, id: string): Promise<any>{
     var model = {
       id: id,

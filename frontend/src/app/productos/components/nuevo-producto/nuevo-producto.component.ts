@@ -26,10 +26,6 @@ export class NuevoProductoComponent implements OnInit {
   clases: Clase[];
   producto: Producto;
 
-
-
-
-
   constructor(
     private fb: FormBuilder,
     private productosService: ProductosService,

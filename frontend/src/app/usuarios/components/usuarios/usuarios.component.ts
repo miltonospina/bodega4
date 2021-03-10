@@ -18,12 +18,16 @@ export class UsuariosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.cargarDatos();
+  }
+
+  cargarDatos(): void {
     this.authService.obtenerUsuarios().subscribe(
       (res) => {
         this.listData = new MatTableDataSource(res);
-      });
+      }
+    );
   }
-
   onSearchClear() {
     this.searchKey = "";
     this.applyFilter();
@@ -83,7 +87,8 @@ export class UsuariosComponent implements OnInit {
               'Usuario registrado satisfactoriamente',
               '',
               'success'
-            )
+            );
+            this.cargarDatos();
           },
           function () {
             Swal.fire(
@@ -102,7 +107,39 @@ export class UsuariosComponent implements OnInit {
         )
       }
     }
-    this.ngOnInit();
+  }
+
+  deleteUser(id: string) {
+    Swal.fire({
+      title: '¿Estás seguro de eliminar este usuario?',
+      text: "No podrás revertir esta acción",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#009900',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.authService.eliminarUsuario(id).then(
+          function() {
+            Swal.fire(
+              '¡Eliminado!',
+              'El usuario ha sido eliminado satisfactoriamente',
+              'success'
+            );
+            this.cargarDatos();
+          },
+          function() {
+            Swal.fire(
+              'Error',
+              'Hubo un problema eliminado al usuario',
+              'error'
+            )
+          }
+        )  
+      }
+    })
   }
 
   validateEmail(email: string) {

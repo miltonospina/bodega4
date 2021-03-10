@@ -164,8 +164,9 @@ namespace b4backend.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Administrador")]
-        public async Task<object> deleUser(string id)
+        public async Task<object> deletUser(string id)
         {
+            Console.WriteLine("LLEGUÉ: "+id);
             var user = await _userManager.FindByIdAsync(id);
 
             var result = await _userManager.DeleteAsync(user);
