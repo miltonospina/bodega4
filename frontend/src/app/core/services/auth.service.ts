@@ -89,6 +89,14 @@ export class AuthService {
     return this.http.delete(`${environment.urlApi}Account/deletUser/${id}`).toPromise();
   }
 
+  restaurarContrasena(id: string, password: string): Promise<any> {
+    var model = {
+      id:id,
+      password: password
+    };
+    return this.http.post(`${environment.urlApi}Account/restaurarContrasena`, model).toPromise();
+  }
+
   cambiarContrasena(password1 : string, password2: string, id: string): Promise<any>{
     var model = {
       id: id,

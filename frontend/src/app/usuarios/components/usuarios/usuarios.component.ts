@@ -21,6 +21,10 @@ export class UsuariosComponent implements OnInit {
     this.cargarDatos();
   }
 
+  reload() {
+    window.location.reload(); 
+  }
+
   cargarDatos(): void {
     this.authService.obtenerUsuarios().subscribe(
       (res) => {
@@ -72,13 +76,13 @@ export class UsuariosComponent implements OnInit {
         Swal.fire(
           'Email inválido',
           '',
-          'error'
+          'warning'
         )
       }else if(password != confirmPassword) {
         Swal.fire(
           'Las contraseñas no coinciden',
           '',
-          'error'
+          'warning'
         )
       }else if(this.validarClave(password)) {
         this.authService.crearUsuario(email, password, rol).then(
@@ -88,7 +92,6 @@ export class UsuariosComponent implements OnInit {
               '',
               'success'
             );
-            this.cargarDatos();
           },
           function () {
             Swal.fire(
@@ -97,8 +100,7 @@ export class UsuariosComponent implements OnInit {
               'error'
             )
           }
-        )
-        
+        ) 
       }else {
         Swal.fire(
           'La contraseña es muy débil',
@@ -109,9 +111,64 @@ export class UsuariosComponent implements OnInit {
     }
   }
 
-  deleteUser(id: string) {
+  async cambiarContrasena(id: string, email: string) {
+    var password, confirmPassword = '';
+    const { value: formValues } = await Swal.fire({
+      title: 'Cambiar contraseña del usuario\n'+email,
+      html:
+        '<input type="password" id="password" class="swal2-input" placeholder="🗝 Escriba la nueva contraseña" required>' +
+        '<input type="password" id="confirmPassword" class="swal2-input" placeholder="🗝 Confirme la nueva contraseña" required>',
+      focusConfirm: false,
+      preConfirm: () => {
+        return [
+          password = (<HTMLInputElement>document.getElementById('password')).value,
+          confirmPassword = (<HTMLInputElement>document.getElementById('confirmPassword')).value
+        ]
+      }
+    });
+    if(formValues) {
+      if(password == '' || confirmPassword == '') {
+        Swal.fire(
+          'Por favor complete todo los campos',
+          '',
+          'warning'
+        )
+      }else if(password != confirmPassword) {
+        Swal.fire(
+          'Las contraseñas no coinciden',
+          '',
+          'warning'
+        )
+      }else if(this.validarClave(password)) {
+        this.authService.restaurarContrasena(id, password).then(
+          function() {
+            Swal.fire(
+              'Contraseña actualizada satisfactoriamente',
+              '',
+              'success'
+            );
+          },
+          function () {
+            Swal.fire(
+              'No se pudo actualizar la contraseña',
+              '',
+              'error'
+            )
+          }
+        ) 
+      }else {
+        Swal.fire(
+          'La contraseña es muy débil',
+          'Recuerde incluir mínimo 8 caracteres, números, letras mayúsculas y minísculas además de un caracter especial',
+          'warning'
+        )
+      }
+    }
+  }
+
+  deleteUser(id: string, email: string) {
     Swal.fire({
-      title: '¿Estás seguro de eliminar este usuario?',
+      title: "¿Estás seguro de eliminar al usuario\n'"+email+"'?",
       text: "No podrás revertir esta acción",
       icon: 'warning',
       showCancelButton: true,
@@ -128,7 +185,7 @@ export class UsuariosComponent implements OnInit {
               'El usuario ha sido eliminado satisfactoriamente',
               'success'
             );
-            this.cargarDatos();
+            this.reload();
           },
           function() {
             Swal.fire(

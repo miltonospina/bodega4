@@ -162,13 +162,35 @@ namespace b4backend.Controllers
             }
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Administrador")]
+
+        public async Task<object> restaurarContrasena([FromBody] restaurarContrasenaDTO model)
+        {   
+            var user = await _userManager.FindByIdAsync(model.id);
+            var cambio = await _userManager.RemovePasswordAsync(user);
+            if(cambio.Succeeded) 
+            {
+                var result = await _userManager.AddPasswordAsync(user, model.password);
+                if (result.Succeeded)
+                {
+                    return new { mensaje = "Contraseña actualizada exitosamente" };
+                }
+                else
+                {
+                    return StatusCode(400, new { result.Errors });
+                }
+            }else{
+                return StatusCode(400, new { cambio.Errors });
+            }
+           
+        }
+
         [HttpDelete("{id}")]
         [Authorize(Roles = "Administrador")]
         public async Task<object> deletUser(string id)
         {
-            Console.WriteLine("LLEGUÉ: "+id);
             var user = await _userManager.FindByIdAsync(id);
-
             var result = await _userManager.DeleteAsync(user);
             if (result.Succeeded)
             {
@@ -282,6 +304,15 @@ namespace b4backend.Controllers
 
             [Required]
             public string Role { get; set; }
+        }
+
+        public class restaurarContrasenaDTO
+        {
+            [Required]
+            public string id { get; set; }
+
+            [Required]
+            public string password { get; set; }
         }
     }
 }
