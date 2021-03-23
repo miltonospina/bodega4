@@ -59,9 +59,7 @@ namespace b4backend.Controllers
         [HttpPost]
         [Authorize(Roles = "Administrador")]
         public async Task<object> Register([FromBody] RegisterDto model)
-        {
-            //return new { hola = this.HttpContext.User.IsInRole("Administrador")};
-            
+        {    
             var user = new IdentityUser
             {
                 UserName = model.UserName,
@@ -107,29 +105,96 @@ namespace b4backend.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrador, Operador")]
-        public List<UserDto> List()
-        {
-            return _userManager.Users.ToList().Select(u => new UserDto(u)).ToList();
+        [Authorize(Roles = "Administrador")]
+        public async Task<List<UsersDto>> getUsers() {
+            List<UsersDto> result = new List<UsersDto>();
+            List<IdentityUser> users = _userManager.Users.ToList();
+            for (int i = 0; i < users.Count; i++)
+            {
+                var id = users[i].Id;
+                var email = users[i].Email;
+                var role = await _userManager.GetRolesAsync(users[i]);
+                result.Add(new UsersDto(id, email, role[0]));
+            }
+            return result;
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Administrador, Operador")]
+        public async Task<UserDto> verUsuario()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            return new UserDto(user);
+        }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Administrador, Operador")]
-        public async Task<object> updateUser(string id, [FromBody] UserDto model)
+        [Authorize(Roles = "Administrador")]
+        public async Task<object> updateUser(string id, string email)
         {
-            if (id != model.Id)
-            {
-                return BadRequest();
-            }
-            var user = await _userManager.FindByIdAsync(model.Id);
-            user.UserName = model.UserName;
-            user.Email = model.Email;
+            var user = await _userManager.FindByIdAsync(id);
+            user.UserName = email;
+            user.Email = email;
 
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
             {
                 return new { mensaje = "Usuario actualizado exitosamente" };
+            }
+            else
+            {
+                return StatusCode(400, new { result.Errors });
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrador")]
+        public async Task<object> cambiarContrasena([FromBody] ChangePasswordDTO model)
+        {
+            var user = await _userManager.FindByIdAsync(model.id);
+            var result = await _userManager.ChangePasswordAsync(user, model.oldPassword, model.newPassword);
+            if (result.Succeeded)
+            {
+                return new { mensaje = "Contraseña actualizada exitosamente" };
+            }
+            else
+            {
+                return StatusCode(400, new { result.Errors });
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrador")]
+
+        public async Task<object> restaurarContrasena([FromBody] restaurarContrasenaDTO model)
+        {   
+            var user = await _userManager.FindByIdAsync(model.id);
+            var cambio = await _userManager.RemovePasswordAsync(user);
+            if(cambio.Succeeded) 
+            {
+                var result = await _userManager.AddPasswordAsync(user, model.password);
+                if (result.Succeeded)
+                {
+                    return new { mensaje = "Contraseña actualizada exitosamente" };
+                }
+                else
+                {
+                    return StatusCode(400, new { result.Errors });
+                }
+            }else{
+                return StatusCode(400, new { cambio.Errors });
+            }
+           
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrador")]
+        public async Task<object> deletUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return new { mensaje = "Usuario eliminado exitosamente" };
             }
             else
             {
@@ -175,6 +240,19 @@ namespace b4backend.Controllers
 
         }
 
+        public class ChangePasswordDTO
+        {
+            [Required]
+            public string id { get; set; }
+
+            [Required]
+            public string oldPassword { get; set; }
+
+            [Required]
+            public string newPassword { get; set; }
+
+        }
+
         public class RegisterDto
         {
             [Required]
@@ -185,6 +263,7 @@ namespace b4backend.Controllers
             [StringLength(100, ErrorMessage = "PASSWORD_MIN_LENGTH", MinimumLength = 6)]
             public string Password { get; set; }
 
+            [Required]
             public string Role { get; set; }
         }
 
@@ -206,6 +285,34 @@ namespace b4backend.Controllers
 
             [Required]
             public string UserName { get; set; }
+        }
+
+        public class UsersDto
+        {
+            public UsersDto(string id, string email, string role)
+            {
+                this.Id = id;
+                this.Email = email;
+                this.Role = role;
+
+            }
+            [Required]
+            public string Id { get; set; }
+
+            [Required]
+            public string Email { get; set; }
+
+            [Required]
+            public string Role { get; set; }
+        }
+
+        public class restaurarContrasenaDTO
+        {
+            [Required]
+            public string id { get; set; }
+
+            [Required]
+            public string password { get; set; }
         }
     }
 }

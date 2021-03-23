@@ -1,0 +1,12 @@
+<div class="principal">
+    <mat-card class="example-card">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>{{username}}</mat-card-title>
+          <mat-card-subtitle>{{rol}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions *ngIf="rol === 'Administrador'">
+          <button mat-button (click)="openDialog()">Cambiar contraseña</button>
+        </mat-card-actions>
+    </mat-card>
+</div>

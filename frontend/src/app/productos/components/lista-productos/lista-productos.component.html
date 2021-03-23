@@ -47,7 +47,7 @@
         <a mat-button color="accent" [routerLink] = "['/productos/editar', row.id]">
           <mat-icon aria-label="icon">edit</mat-icon>
         </a>
-        <button mat-button color="warn" (click)="openDeleteDialog(row)">
+        <button mat-button color="warn" (click)="openDeleteDialog(row.id)">
           <mat-icon aria-label="icon">delete</mat-icon>
         </button>
       </td>

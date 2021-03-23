@@ -1,0 +1,29 @@
+<h1 mat-dialog-title style="text-align: center; color: #004d00;"><b>Cambio de contraseña</b></h1>
+<div style="text-align: center;">
+  <mat-form-field>
+    <mat-label>Ingresa tu contraseña</mat-label>
+    <input matInput [type]="data.hide1 ? 'password' : 'text'" [(ngModel)]="data.password1">
+    <button mat-icon-button matSuffix (click)="data.hide1 = !data.hide1" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="data.hide1">
+    <mat-icon>{{data.hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Ingresa tu nueva contraseña</mat-label>
+    <input matInput [type]="data.hide2 ? 'password' : 'text'" [(ngModel)]="data.password2">
+    <button mat-icon-button matSuffix (click)="data.hide2 = !data.hide2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="data.hide2">
+    <mat-icon>{{data.hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Repite tu nueva contraseña</mat-label>
+    <input matInput [type]="data.hide3 ? 'password' : 'text'" [(ngModel)]="data.password3">
+    <button mat-icon-button matSuffix (click)="data.hide3 = !data.hide3" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="data.hide3">
+    <mat-icon>{{data.hide3 ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+  </mat-form-field>
+  <mat-dialog-actions style="align-items: center; justify-content: center;">
+    <button mat-button (click)="onNoClick()">Cancelar</button>
+    <button mat-button [mat-dialog-close] = "[data.password1, data.password2, data.password3]" cdkFocusInitial>Cambiar</button>
+  </mat-dialog-actions>
+</div>
+  
