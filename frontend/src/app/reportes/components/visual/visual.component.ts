@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { BodegaService } from 'src/app/core/services/bodega.service';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-visual',
   templateUrl: './visual.component.html',
@@ -22,7 +22,9 @@ export class VisualComponent implements OnInit {
     xcubo: 15,
     ycubo: 19,
     xespacio: 4,
-    yespacio: 7
+    yespacio: 7,
+    max_x : 904,
+    max_y : 1000
   };
 
   constructor(private bodegaService: BodegaService) { }
@@ -59,7 +61,17 @@ export class VisualComponent implements OnInit {
 
 
   infoPaquete(paq): void{
-    console.log(paq);
+    let idPaquete = paq.paquetesId;
+    this.bodegaService.getPaquete(idPaquete).subscribe(
+      rs => {
+        Swal.fire(
+          '<b>Información de la estiba</b>',
+          '<b>Lote: </b>' + rs.lote+'<br/>'+
+          '<b>Cliente: </b>' + rs.cliente.nombre+"<br/>"+
+          '<b>Bultos: </b>' + rs.bultos+"<br/>"+
+          '<b>Producto: </b>' + rs.producto.codigoProvidencia+" - "+rs.producto.nombre,
+          'info'
+        )
+    });
   }
-
 }

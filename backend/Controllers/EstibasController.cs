@@ -110,7 +110,7 @@ namespace b4backend.Controllers
             Movimientos mov = new Movimientos();
             mov.Columna = columna;
             mov.Nivel = nivel;
-
+            
             object rs = await _bodega4.getPrimero(mov);
             return Ok(new { respuesta = rs });
         }
