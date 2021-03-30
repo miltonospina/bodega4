@@ -22,7 +22,9 @@ export class VisualComponent implements OnInit {
     xcubo: 15,
     ycubo: 19,
     xespacio: 4,
-    yespacio: 7
+    yespacio: 7,
+    max_x : 904,
+    max_y : 1000
   };
 
   constructor(private bodegaService: BodegaService) { }
