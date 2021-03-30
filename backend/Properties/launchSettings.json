@@ -4,7 +4,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:57006",
+      "applicationUrl": "http://172.18.1.23",
       "sslPort": 44357
     }
   },
@@ -12,16 +12,16 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "b4",
+      "launchUrl": "",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "b4backend": {
+    "BodegaWebAPI": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "b4",
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "applicationUrl": "https://172.18.1.23;http://172.18.1.23",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
