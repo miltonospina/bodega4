@@ -4,6 +4,7 @@ using b4backend.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace b4backend.BLL
 {
@@ -56,10 +57,40 @@ namespace b4backend.BLL
         }
 
 
+        public int minPosicion(Movimientos mov)
+        {
+            int respuesta;
+            if (existePosicion(mov))
+            {
+                var tunelt = _context.VPosicionesActual
+                .Where(s => s.Columna == mov.Columna)
+                .Where(s => s.Nivel == mov.Nivel)
+                .OrderBy(pos => pos.Posicion);
+
+                var tunel = tunelt.FirstOrDefault();
+                
+
+                if(tunel != null){
+                    
+                    respuesta = (int) tunel.Posicion;
+                    string json = JsonConvert.SerializeObject(tunelt, Formatting.Indented);
+                }
+                else{
+                    respuesta = this.posiciones + 1;
+                }
+            }
+            else
+            {
+                respuesta = -1;
+            }
+            return respuesta;
+        }
+
+
 
         public object ingreso(Movimientos ingreso)
         {
-            int rs = maxPosicion(ingreso);
+            int rs = minPosicion(ingreso);
             if (rs == 1)
             {
                 return ("No hay posiciones disponibles.");
@@ -80,7 +111,7 @@ namespace b4backend.BLL
 
         public object simularIngreso(Movimientos ingreso)
         {
-            int rs = maxPosicion(ingreso);
+            int rs = minPosicion(ingreso);
             if (rs == 1)
             {
                 return ("No hay posiciones disponibles.");
@@ -268,7 +299,7 @@ namespace b4backend.BLL
 
         public object salidaMultiple(Movimientos salida, int cantidad)
         {
-            int rs = maxPosicion(salida);
+            int rs = minPosicion(salida);
 
             if (rs == (this.posiciones + 1))
             {
