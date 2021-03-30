@@ -3,7 +3,7 @@
         <svg:svg viewBox="0 0 925 450" preserveAspectRatio="x925Y450 meet" style="background-color:aliceblue">
         <!-- VACIOS -->
         <g *ngFor="let col of columnas">
-            <rect *ngFor="let pos of posiciones"
+            <rect *ngFor="let pos of posiciones"    
             [attr.width]="dim.xcubo"
             [attr.heigth]="dim.ycubo"
             [attr.x]="((dim.x + (pos * dim.xcubo))+ ((pos -1) * dim.xespacio))"

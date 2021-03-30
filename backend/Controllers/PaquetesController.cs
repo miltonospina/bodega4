@@ -33,7 +33,7 @@ namespace b4backend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Paquetes>> GetPaquetes(int id)
         {
-            var paquetes = await _context.Paquetes.FindAsync(id);
+            var paquetes = await _context.Paquetes.Include(s => s.Cliente).Include(r => r.Producto).FirstOrDefaultAsync(i => i.Id == id);
 
             if (paquetes == null)
             {
