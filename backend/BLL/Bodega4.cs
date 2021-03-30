@@ -267,7 +267,7 @@ namespace b4backend.BLL
 
         public object ingresoMultiple(Movimientos ingreso, int cantidad)
         {
-            int rs = maxPosicion(ingreso);
+            int rs = minPosicion(ingreso);
             if (rs == 1)
             {
                 return ("No hay posiciones disponibles.");
