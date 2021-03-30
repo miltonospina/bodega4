@@ -150,7 +150,7 @@ namespace b4backend.Controllers
             Object rs = _bodega4.salidaMultiple(salida, data.cantidad);
             if (rs is string)
             {
-                return NotFound(rs);
+                return StatusCode(400, rs);
             }
             else
             {
