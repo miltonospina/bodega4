@@ -29,16 +29,18 @@ namespace b4backend.Controllers
         // GET: api/Layout
         [HttpGet]
         public ActionResult Getlayout()
-        {   
-            return Ok(new {
+        {
+            return Ok(new
+            {
                 niveles = _bodega4.getNiveles(),
                 columnas = _bodega4.getColumnas(),
                 posiciones = _bodega4.getPosiciones()
-            });            
+            });
         }
 
         [HttpGet("{col}/{niv}")]
-        public ActionResult getDisponible(int col, int niv){
+        public ActionResult getDisponible(int col, int niv)
+        {
 
             Movimientos entrada = new Movimientos();
             entrada.Columna = col;
@@ -49,7 +51,8 @@ namespace b4backend.Controllers
         }
 
         [HttpPost("migracion")]
-        public ActionResult migracion( [FromBody] migrationModel[] listado){
+        public ActionResult migracion([FromBody] migrationModel[] listado)
+        {
 
             _context.Movimientos.RemoveRange(_context.Movimientos);
 
@@ -68,9 +71,9 @@ namespace b4backend.Controllers
                 ingreso.Paquetes.Lote = item.lote;
                 ingreso.Paquetes.Bultos = item.bultos;
 
-                Console.WriteLine(c + "/"+ l + " pr: "+ item.codigo_producto);
-                ingreso.Paquetes.Producto = _context.Productos.First( p => p.CodigoProvidencia == item.codigo_producto);
-                
+                Console.WriteLine(c + "/" + l + " pr: " + item.codigo_producto);
+                ingreso.Paquetes.Producto = _context.Productos.First(p => p.CodigoProvidencia == item.codigo_producto);
+
 
                 ingreso.Paquetes.Cliente = _context.Clientes.First(c => c.Nombre == item.cliente);
 
@@ -90,38 +93,37 @@ namespace b4backend.Controllers
 
             }
 
-            return Ok( new { largo = listado.Length });
+            return Ok(new { largo = listado.Length });
         }
-
-
 
 
     }
 
-    public class migrationModel{
+    public class migrationModel
+    {
 
         [Required]
-        public int columna {get;set;}
+        public int columna { get; set; }
         [Required]
-        public int nivel {get;set;}
+        public int nivel { get; set; }
         [Required]
-        public int posicion {get;set;}
+        public int posicion { get; set; }
         [Required]
-        public int paquete {get;set;}
+        public int paquete { get; set; }
         [Required]
-        public DateTime fechaingreso {get;set;}
+        public DateTime fechaingreso { get; set; }
         [Required]
-        public string lote {get;set;}
+        public string lote { get; set; }
         [Required]
-        public string nombre{get;set;}
+        public string nombre { get; set; }
 
         [Required]
-        public string codigo_producto{get;set;}
-        
-        [Required]
-        public string  cliente{get;set;}
+        public string codigo_producto { get; set; }
 
         [Required]
-        public int bultos {get;set;}
+        public string cliente { get; set; }
+
+        [Required]
+        public int bultos { get; set; }
     }
 }

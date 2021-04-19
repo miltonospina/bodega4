@@ -68,14 +68,16 @@ namespace b4backend.BLL
                 .OrderBy(pos => pos.Posicion);
 
                 var tunel = tunelt.FirstOrDefault();
-                
 
-                if(tunel != null){
-                    
-                    respuesta = (int) tunel.Posicion;
+
+                if (tunel != null)
+                {
+
+                    respuesta = (int)tunel.Posicion;
                     string json = JsonConvert.SerializeObject(tunelt, Formatting.Indented);
                 }
-                else{
+                else
+                {
                     respuesta = this.posiciones + 1;
                 }
             }
@@ -181,12 +183,13 @@ namespace b4backend.BLL
 
             mIngreso.Paquetes.Bultos = paqueteActual.Bultos - bultosSalen;
 
-            if(mIngreso.Paquetes.Bultos == 0)
+            if (mIngreso.Paquetes.Bultos == 0)
             {
                 return new[] {
                     "Acción inválida: Si requiere realizar esta operación, por favor haga una salida completa"
                     };
-            }else if (mIngreso.Paquetes.Bultos < 0)
+            }
+            else if (mIngreso.Paquetes.Bultos < 0)
             {
                 return new[] {
                     "Imposible hacer salida por "+ bultosSalen +" bultos, solo hay "+paqueteActual.Bultos + " disponibles"
@@ -361,6 +364,67 @@ namespace b4backend.BLL
                 return -1;
             }
         }
+
+
+        public IEnumerable<Organizable> listaOrganizables()
+        {
+            return _context.VMinimoPos
+            .Where(i => i.Minimo > 0)
+            .Select(i => new Organizable(i, this.posiciones));
+        }
+
+
+
+        /// <summary>This method changes the point's location by
+        ///    the given x- and y-offsets.
+        /// <example>For example:
+        /// <code>
+        ///    Point p = new Point(3,5);
+        ///    p.Translate(-1,3);
+        /// </code>
+        /// results in <c>p</c>'s having the value (2,8).
+        /// </example>
+        /// </summary>
+        public async Task<IEnumerable<Movimientos>> organizar(Organizable o)
+        {
+            //por cada uno de los elementos en el tunel;
+
+            List<Movimientos> r = new List<Movimientos>();
+            
+            var q = await _context.VPosicionesActual
+            .AsQueryable()
+            .Where(p => p.Columna == o.Columna)
+            .Where(p => p.Nivel == o.Nivel).ToListAsync();
+
+            Console.WriteLine(q.ToArray());
+
+            foreach (var item in q.ToArray())
+            {
+                Movimientos salida = new Movimientos();
+                salida.Sentido = -1;
+                salida.Nivel = item.Nivel;
+                salida.Columna = item.Columna;
+                salida.Posicion = item.Posicion;
+                salida.PaquetesId = item.PaquetesId;
+                salida.Fecha = DateTime.Now;
+
+                Movimientos reingreso = new Movimientos();
+                reingreso.Sentido = 1;
+                reingreso.Nivel = item.Nivel;
+                reingreso.Columna = item.Columna;
+                reingreso.Posicion = item.Posicion + o.EspaciosVacios;
+                reingreso.PaquetesId = item.PaquetesId;
+                reingreso.Fecha = DateTime.Now.AddSeconds(1);
+
+
+                r.Add(salida);
+                r.Add(reingreso);
+                Console.WriteLine(r.ToArray().Length);
+            }
+            Console.WriteLine(r.ToArray().Length);
+            return r;
+        }
+
         public IEnumerable<int> getColumnas()
         {
             return Enumerable.Range(1, this.columnas);
