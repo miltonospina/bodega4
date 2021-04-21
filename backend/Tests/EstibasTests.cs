@@ -1,4 +1,3 @@
-
 using System;
 using b4backend.BLL;
 using b4backend.Models;
@@ -16,9 +15,12 @@ namespace Tests
         [TestInitialize]
         public void SetUp()
         {   
-            /*var connection = Effort.DbConnectionFactory.CreateTransient();
-            var context = new EntityContext(connection);
-            _bodega4 = new Bodega4(context);*/
+            //Create in memory database
+            DbContextOptions<bodega4Context> options = new DbContextOptionsBuilder<bodega4Context>().
+                UseInMemoryDatabase(databaseName: "BODEGA_AZU_IPSA").Options;
+
+            bodega4Context context = new bodega4Context(options);
+            _bodega4 = new Bodega4(context);
         }
 
         [TestMethod]
@@ -28,14 +30,14 @@ namespace Tests
             Movimientos movimiento = new Movimientos();
             movimiento.Columna = 1;
             movimiento.Nivel = 1;
-            movimiento.Id = 1150642;
-            movimiento.PaquetesId = 356773;
             
+            System.Console.WriteLine("POSICIÓN ESPERADA 1: "+_bodega4.minPosicion(movimiento));
             //Act
             _bodega4.ingreso(movimiento);
 
+            System.Console.WriteLine("POSICIÓN ESPERADA 2: "+_bodega4.minPosicion(movimiento));
             //Assert
-            Assert.IsTrue(_bodega4.maxPosicion(movimiento) == 45);
+            Assert.IsTrue(_bodega4.minPosicion(movimiento) == 28);
         }
     }
 }
