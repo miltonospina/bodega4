@@ -110,7 +110,7 @@ namespace b4backend.Controllers
             Movimientos mov = new Movimientos();
             mov.Columna = columna;
             mov.Nivel = nivel;
-            
+
             object rs = await _bodega4.getPrimero(mov);
             return Ok(new { respuesta = rs });
         }
@@ -162,6 +162,47 @@ namespace b4backend.Controllers
                 });
                 await _context.SaveChangesAsync();
                 return CreatedAtAction("GetMovimientos", "Movimientos", new { id = 0 }, lista);
+            }
+        }
+
+        [HttpGet("organizar")]
+        public ActionResult<IEnumerable<Organizable>> listaOrganizables()
+        {
+            return Ok(_bodega4.listaOrganizables());
+        }
+
+
+        [HttpPost("organizar")]
+        public async Task<ActionResult<object>> organizar([FromBody] Organizable o)
+        {
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var l = await _bodega4.organizar(o);
+                    var largo = l.ToArray().Length;
+
+                    l.Select(p =>
+                    {
+                        _context.Movimientos.Add(p);
+                        _context.SaveChanges();
+                        return 1;
+                    })
+                    .Aggregate((t, n) =>{
+                        t = t + n;
+                        if (t == largo){
+                            dbContextTransaction.Commit();
+                        }
+                        return t;
+                    });
+
+                }
+                catch (Exception e)
+                {
+                    dbContextTransaction.Rollback();
+                    return StatusCode(500, new { mensaje = "Ocurrió un error al realizar el movimiento: " + e.Message , Status = "ERR" });
+                }
+                return Ok(new { mensaje = "El tunel ha sido organizado", Status = "OK" });
             }
         }
 
