@@ -3,6 +3,7 @@ import { Bodega } from '../models/bodega';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { OrganizarItem } from 'src/app/organizar/components/organizar/organizar-datasource';
 
 @Injectable({
   providedIn: 'root'
@@ -72,5 +73,17 @@ export class BodegaService {
 
   getPaquete(id: string): Observable<any> {
     return this.http.get(`${environment.urlApi}paquetes/${id}`);
+  }
+
+  getOrganizables(): Observable<any> {
+    return this.http.get(`${environment.urlApi}estibas/organizar`);
+  }
+
+  organizarPaquetes(tunel: OrganizarItem): Observable<any> {
+    const obj = {
+      ...tunel,
+      usuariosId: 16,
+    };
+    return this.http.post<Bodega>(`${environment.urlApi}estibas/organizar`, obj);
   }
 }

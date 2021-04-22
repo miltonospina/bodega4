@@ -179,22 +179,19 @@ namespace b4backend.Controllers
             {
                 try
                 {
-                    Console.WriteLine("Primero esto");
                     var l = await _bodega4.organizar(o);
+                    var largo = l.ToArray().Length;
 
                     l.Select(p =>
                     {
                         _context.Movimientos.Add(p);
                         _context.SaveChanges();
-                        Console.WriteLine("Segundo esto");
                         return 1;
                     })
                     .Aggregate((t, n) =>{
                         t = t + n;
-                        Console.WriteLine(t);
-                        if (t == o.EspaciosVacios * 2){
+                        if (t == largo){
                             dbContextTransaction.Commit();
-                            Console.WriteLine("Luego esto");
                         }
                         return t;
                     });
@@ -203,10 +200,9 @@ namespace b4backend.Controllers
                 catch (Exception e)
                 {
                     dbContextTransaction.Rollback();
-                    return StatusCode(500, new { mensaje = "Ocurrió un error al realizar el movimiento: " + e.Message });
+                    return StatusCode(500, new { mensaje = "Ocurrió un error al realizar el movimiento: " + e.Message , Status = "ERR" });
                 }
-
-                return Ok(new { mensaje = "El tunel ha sido organizado" });
+                return Ok(new { mensaje = "El tunel ha sido organizado", Status = "OK" });
             }
         }
 

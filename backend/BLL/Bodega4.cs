@@ -370,7 +370,9 @@ namespace b4backend.BLL
         {
             return _context.VMinimoPos
             .Where(i => i.Minimo > 0)
-            .Select(i => new Organizable(i, this.posiciones));
+            .Select(i => new Organizable(i, this.posiciones))
+            .AsEnumerable()
+            .Where(i => i.EspaciosVacios > 0);
         }
 
 
@@ -396,8 +398,6 @@ namespace b4backend.BLL
             .Where(p => p.Columna == o.Columna)
             .Where(p => p.Nivel == o.Nivel).ToListAsync();
 
-            Console.WriteLine(q.ToArray());
-
             foreach (var item in q.ToArray())
             {
                 Movimientos salida = new Movimientos();
@@ -416,12 +416,9 @@ namespace b4backend.BLL
                 reingreso.PaquetesId = item.PaquetesId;
                 reingreso.Fecha = DateTime.Now.AddSeconds(1);
 
-
                 r.Add(salida);
                 r.Add(reingreso);
-                Console.WriteLine(r.ToArray().Length);
             }
-            Console.WriteLine(r.ToArray().Length);
             return r;
         }
 
